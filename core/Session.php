@@ -23,7 +23,16 @@ class 							Session {
                 self::$id = $headers['X-Token'];
             }
         }
-
+		
+		/**
+		 * Clean old sessions
+		 */
+		Db::getInstance()->Sessions->remove([
+			'expire' => [
+				'$lt' => time()
+			]
+		]);
+		
         /**
          * If a session id was transmitted, we try to get data from DB
          */
@@ -37,7 +46,7 @@ class 							Session {
                     API::special('deleteToken', true);
                 }
             } else
-                self::$__data = $d;
+                self::$__data = JSON::toArray($d['data']);
         }
         self::save();
 
@@ -48,14 +57,13 @@ class 							Session {
 
     public static function      create() {
         if (self::$id === false) {
-            $d = self::$__data;
-            $id = Db::getInstance()->Sessions->insert($d);
-            self::$id = $id;
+	        $d = ['data' => json_encode(self::$__data), 'expire' => strtotime(self::$__expire)];
+            self::$id = Db::getInstance()->Sessions->insert($d);
         }
     }
 
     public static function      save() {
-        $d = self::$__data;
+        $d = ['data' => json_encode(self::$__data), 'expire' => strtotime(self::$__expire)];
         /**
          * If no active session, create a new session in DB, or update data in DB
          * If we are in API mode, no session will be created
@@ -63,8 +71,7 @@ class 							Session {
          * For the API mode, we can force the session creation with Session::create()
          */
         if (!self::$apiMode) {
-            Db::getInstance()->Sessions->insert($d);
-            self::$id = (string)$d['_id'];
+            self::$id = Db::getInstance()->Sessions->insert($d);
         } elseif (self::$id !== false) {
             Db::getInstance()->Sessions->update([
                 'id' => self::$id
