@@ -1,5 +1,17 @@
 {
     "cookie": {
         "domain": "*.domain.com"
+    },
+    "page": {
+        "title": "",
+        "description": "",
+        "keywords": "",
+        "robots": "noindex, nofollow",
+        "share": {
+            "image": "",
+            "twitter": {
+                "username": "@HeavyNounours"
+            }
+        }
     }
 }

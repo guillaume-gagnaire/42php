@@ -111,12 +111,10 @@ class 							Argv {
 		return $toReturn;
 	}
 	
-	public static function 		createUrl($name, $params = [], $lang = false, $site = false) {
-		if (!$site)
-			$site = Conf::get('site');
+	public static function 		createUrl($name, $params = [], $lang = false) {
 		if (!$lang)
 			$lang = Conf::get('lang');
-		$routes = json_decode(file_get_contents(ROOT.'/config/routes.'.$site.'.json'), true);
+		$routes = json_decode(file_get_contents(ROOT.'/config/routes.json'), true);
 		if (!isset($routes[$name]['routes'][$lang]))
 			return '/';
 		$url = str_replace('?', '', $routes[$name]['routes'][$lang]);

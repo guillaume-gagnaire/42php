@@ -12,7 +12,7 @@ class 							Conf {
 		return true;
 	}
 	
-	public static function 		get($var, $default = '') {
+	public static function 		get($var, $default = false) {
 		$els = explode('.', $var);
 		$current = self::$__configuration;
 		$l = sizeof($els) - 1;
