@@ -34,4 +34,8 @@ class View {
         return '<link rel="stylesheet" type="text/css" href="/lib/slick/slick.css" />
                 <script type="text/javascript" src="/lib/slick/slick.min.js"></script>';
     }
+
+    public static function angular() {
+        return '<script type="text/javascript" src="/lib/angular/angular.min.js"></script>';
+    }
 } 
