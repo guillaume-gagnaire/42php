@@ -38,4 +38,19 @@ class View {
     public static function angular() {
         return '<script type="text/javascript" src="/lib/angular/angular.min.js"></script>';
     }
+
+    public static function redactor($selector = 'textarea', $libs = [], $opts = []) {
+        if (sizeof($libs))
+            $libs['plugins'] = $opts;
+        $src = '<link rel="stylesheet" type="text/css" href="/lib/redactor/redactor.css" />
+                <script type="text/javascript" src="/lib/redactor/redactor.js"></script>';
+        foreach ($libs as $lib)
+            $src .= '<script type="text/javascript" src="/lib/redactor/'.$lib.'.js"></script>';
+        $src .= '<script type="text/javascript">
+                    $(function(){
+                        $("'.$selector.'").redactor('.json_encode($opts).');
+                    });
+                </script>';
+        return $src;
+    }
 } 
