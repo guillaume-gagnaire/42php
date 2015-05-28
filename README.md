@@ -6,3 +6,4 @@ Requirements:
 
 * PHP >= 5.4
 * MySQL
+* A simple dose of brain
