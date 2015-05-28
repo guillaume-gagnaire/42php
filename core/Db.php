@@ -10,6 +10,7 @@ class                               Db {
             } catch (PDOException $e) {
                 echo 'Connection failed: ' . $e->getMessage();
             }
+            $pdo->exec("SET character_set_results = 'utf8', character_set_client = 'utf8', character_set_connection = 'utf8', character_set_database = 'utf8', character_set_server = 'utf8'");
             self::$__instance = new DbHandle($pdo, Conf::get('pdo.prefix'));
         }
         return self::$__instance;
@@ -37,30 +38,30 @@ class                               Db {
         $str = [];
 
         foreach ($query as $k => $v) {
-            if (is_array($v) && !in_array($k, ['$in', '$nin']))
+            if (is_array($v) && !in_array($k, ['$in', '$nin', '$and', '$or', '$not', '$nor']))
                 $str[] = '('.Db::where($v, $join, $k).')';
             else
                 switch ($k) {
                     case '$like':
-                        $str[] = '`'.$k.'` LIKE '.Db::quote($v);
+                        $str[] = '`'.$parent.'` LIKE '.Db::quote($v);
                         break;
                     case '$eq':
-                        $str[] = '`'.$k.'`='.Db::quote($v);
+                        $str[] = '`'.$parent.'`='.Db::quote($v);
                         break;
                     case '$gt':
-                        $str[] = '`'.$k.'`>'.Db::quote($v);
+                        $str[] = '`'.$parent.'`>'.Db::quote($v);
                         break;
                     case '$gte':
-                        $str[] = '`'.$k.'`>='.Db::quote($v);
+                        $str[] = '`'.$parent.'`>='.Db::quote($v);
                         break;
                     case '$lt':
-                        $str[] = '`'.$k.'`<'.Db::quote($v);
+                        $str[] = '`'.$parent.'`<'.Db::quote($v);
                         break;
                     case '$lte':
-                        $str[] = '`'.$k.'`<='.Db::quote($v);
+                        $str[] = '`'.$parent.'`<='.Db::quote($v);
                         break;
                     case '$ne':
-                        $str[] = '`'.$k.'`!='.Db::quote($v);
+                        $str[] = '`'.$parent.'`!='.Db::quote($v);
                         break;
                     case '$in':
                         $els = [];
@@ -75,13 +76,16 @@ class                               Db {
                         $str[] = '`'.$parent.'` NOT IN ('.implode(', ', $els).')';
                         break;
                     case '$or':
-                        $str[] = '('.Db::where($v, ' OR ').')';
+                        $str[] = '('.Db::where($v, ' OR ', $parent).')';
                         break;
                     case '$and':
-                        $str[] = '('.Db::where($v, ' AND ').')';
+                        $str[] = '('.Db::where($v, ' AND ', $parent).')';
                         break;
                     case '$not':
-                        $str[] = '!('.Db::where($v, ' OR ').')';
+                        $str[] = '!('.Db::where($v, ' AND ', $parent).')';
+                        break;
+                    case '$nor':
+                        $str[] = '!('.Db::where($v, ' OR ', $parent).')';
                         break;
                     default:
                         $str[] = '`'.$k.'`='.Db::quote($v);

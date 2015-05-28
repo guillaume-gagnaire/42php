@@ -31,19 +31,6 @@ class                           User extends Model {
         }
     }
 
-    public function             onSave() {
-        Db::getInstance()->User->createIndex([
-            'email' => 1
-        ], [
-            'unique' => true
-        ]);
-        Db::getInstance()->User->createIndex([
-            'slug' => 1
-        ], [
-            'unique' => true
-        ]);
-    }
-
     public function             setPassword($newPassword) {
         $this->password = Hash::blowfish($newPassword);
         return $this;

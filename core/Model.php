@@ -46,9 +46,14 @@ class                                   Model {
         $data = $this->__data();
         if (is_null($data['id']))
             unset($data['id']);
+
+        foreach ($data as $k => $v) {
+            if (is_bool($v))
+                $data[$k] = $v ? 1 : 0;
+        }
+
         $collection = get_class($this);
-        Db::getInstance()->$collection->save($data);
-        $this->id = $data['id'];
+        $this->id = Db::getInstance()->$collection->save($data);
         if (method_exists($this, 'onSave'))
             $this->onSave();
     }
