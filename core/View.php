@@ -7,7 +7,7 @@
  */
 
 class View {
-    public static function render($viewFile, $params = [], $header = true) {
+    public static function renderFile($viewFile, $params, $header) {
         if (!file_exists(ROOT.'/views/'.$viewFile.'.php'))
             return '';
         extract($params);
@@ -20,5 +20,13 @@ class View {
         $output = ob_get_contents();
         ob_end_clean();
         return $output;
+    }
+
+    public static function render($viewFile, $params = []) {
+        return self::renderFile($viewFile, $params, true);
+    }
+
+    public static function partial($viewFile, $params = []) {
+        return self::renderFile($viewFile, $params, false);
     }
 } 
