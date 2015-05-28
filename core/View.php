@@ -29,4 +29,9 @@ class View {
     public static function partial($viewFile, $params = []) {
         return self::renderFile($viewFile, $params, false);
     }
+
+    public static function slick() {
+        return '<link rel="stylesheet" type="text/css" href="/lib/slick/slick.css" />
+                <script type="text/javascript" src="/lib/slick/slick.min.js"></script>';
+    }
 } 
