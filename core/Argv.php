@@ -51,7 +51,7 @@ class 							Argv {
 		$offset = -1;
 		$toReturn = false;
 		$lang = Conf::get('oldlang') != '' ? Conf::get('oldlang') : Conf::get('lang');
-		
+
 		foreach ($routes as $name => $r) {
 			if (!isset($r['routes'][$lang]))
 				continue;

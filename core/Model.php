@@ -1,7 +1,7 @@
 <?php
 
 class                                   Model {
-    public                              $_id = null;
+    public                              $id = null;
 
     /**
      * Construit le document, et, si besoin, récupère les données en base
@@ -12,7 +12,7 @@ class                                   Model {
             if (is_null($data)) {
                 $collection = get_class($this);
                 $data = Db::getInstance()->$collection->findOne([
-                    '_id' => new MongoId($id)
+                    'id' => $id
                 ]);
             }
             if (!is_null($data)) {
@@ -44,11 +44,11 @@ class                                   Model {
         if (method_exists($this, 'beforeSave'))
             $this->beforeSave();
         $data = $this->__data();
-        if (is_null($data['_id']))
-            unset($data['_id']);
+        if (is_null($data['id']))
+            unset($data['id']);
         $collection = get_class($this);
         Db::getInstance()->$collection->save($data);
-        $this->_id = $data['_id'];
+        $this->id = $data['id'];
         if (method_exists($this, 'onSave'))
             $this->onSave();
     }
@@ -60,8 +60,8 @@ class                                   Model {
     public function                     duplicate() {
         $collection = get_class($this);
         $data = $this->__data();
-        if (is_null($data['_id']))
-            unset($data['_id']);
+        if (isset($data['id']))
+            unset($data['id']);
         $newOne = new $collection();
         foreach ($data as $k => $v)
             $newOne->$k = $v;
@@ -72,12 +72,12 @@ class                                   Model {
      * Supprime un document
      */
     public function                     delete() {
-        if (!is_null($this->_id)) {
+        if (!is_null($this->id)) {
             $collection = get_class($this);
             Db::getInstance()->$collection->remove([
-                '_id' => $this->_id
+                'id' => $this->id
             ]);
-            $this->_id = null;
+            $this->id = null;
         }
     }
 
@@ -87,8 +87,6 @@ class                                   Model {
      */
     public function                     toJson() {
         $data = $this->__data();
-        $data['id'] = $data['_id'];
-        unset($data['_id']);
         return $data;
     }
 
@@ -102,7 +100,7 @@ class                                   Model {
         $data = Db::getInstance()->$collection->find($query);
         $ret = [];
         foreach ($data as $line)
-            $ret[] = new $collection((string)$line['_id'], $line);
+            $ret[] = new $collection($line['id'], $line);
         return $ret;
     }
 
@@ -116,7 +114,7 @@ class                                   Model {
         $data = Db::getInstance()->$collection->findOne($query);
         if (is_null($data))
             return false;
-        return new $collection((string)$data['_id'], $data);
+        return new $collection($data['id'], $data);
     }
 }
 

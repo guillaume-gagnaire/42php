@@ -8,7 +8,7 @@ class 						Http {
 	public static function 	throw404($force = false) {
 		if (!$force) {
 			global $argv;
-			$route = Argv::globalRoute($argv, json_decode(file_get_contents(ROOT.'/config/routes.'.Conf::get('site').'.json'), true));
+			$route = Argv::globalRoute($argv, JSON::toArray(ROOT.'/config/routes.json'));
 			if ($route) {
 				$url = Argv::createUrl($route['route']['name'], $route['route']['params']);
 				if (sizeof($_GET))
@@ -16,10 +16,8 @@ class 						Http {
 				Redirect::http($url);
 			}
 		}
-		global $html;
 		header("HTTP/1.0 404 Not Found");
-		if ($html)
-			echo $html->display('404');
+        echo View::render('404');
 		die();
 	}
 

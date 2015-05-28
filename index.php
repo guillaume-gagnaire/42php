@@ -10,7 +10,7 @@ $route = Argv::route($argv, JSON::toArray(ROOT.'/config/routes.json'));
 if (isset($route['route']))
     Conf::set('route', $route['route']);
 
-include 'scripts/i18n.php';
+include ROOT.'/scripts/i18n.php';
 
 if (!$route) {
     Http::throw404(false);
