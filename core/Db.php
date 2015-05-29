@@ -39,7 +39,7 @@ class                               Db {
 
         foreach ($query as $k => $v) {
             if (is_array($v) && !in_array($k, ['$in', '$nin', '$and', '$or', '$not', '$nor']))
-                $str[] = '('.Db::where($v, $join, $k).')';
+                $str[] = '('.Db::where($v, ' AND ', $k).')';
             else
                 switch ($k) {
                     case '$like':
