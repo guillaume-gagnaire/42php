@@ -7,11 +7,11 @@ class                               Db {
         if (is_null(self::$__instance)) {
             try {
                 $pdo = new PDO(Conf::get('pdo.dsn'), Conf::get('pdo.user'), Conf::get('pdo.pass'));
+	            $pdo->exec("SET character_set_results = 'utf8', character_set_client = 'utf8', character_set_connection = 'utf8', character_set_database = 'utf8', character_set_server = 'utf8'");
+	            self::$__instance = new DbHandle($pdo, Conf::get('pdo.prefix'));
             } catch (PDOException $e) {
                 echo 'Connection failed: ' . $e->getMessage();
             }
-            $pdo->exec("SET character_set_results = 'utf8', character_set_client = 'utf8', character_set_connection = 'utf8', character_set_database = 'utf8', character_set_server = 'utf8'");
-            self::$__instance = new DbHandle($pdo, Conf::get('pdo.prefix'));
         }
         return self::$__instance;
     }
