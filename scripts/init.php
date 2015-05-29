@@ -23,7 +23,7 @@ if (isset($_GET['lang']) && in_array($_GET['lang'], i18n::$__acceptedLanguages))
 	Conf::set('lang', $_GET['lang']);
 }
 
-i18n::load('front');
+i18n::load();
 
 // Construction du tableau d'arguments
 include ROOT.'/scripts/argv.php';

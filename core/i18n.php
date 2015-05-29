@@ -13,17 +13,20 @@ class 							i18n {
 		'en'
 	];
 	
-	public static function 		load($file) {
-		if (!file_exists(ROOT.'/i18n/'.$file.'.'.Conf::get('lang').'.json'))
+	public static function 		load() {
+		if (!file_exists(ROOT.'/i18n/'.Conf::get('lang').'.json'))
 			return false;
 		
-		$content = json_decode(file_get_contents(ROOT.'/i18n/'.$file.'.'.Conf::get('lang').'.json'), true);
+		$content = json_decode(file_get_contents(ROOT.'/i18n/'.Conf::get('lang').'.json'), true);
 		self::$__translations = array_merge(self::$__translations, $content);
 	}
 	
 	public static function 		get($key, $params = []) {
-		if (!isset(self::$__translations[$key]))
-			return '';
+		if (!isset(self::$__translations[$key])) {
+			self::$__translations[$key] = $key;
+			file_put_contents(ROOT.'/i18n/'.Conf::get('lang').'.json', json_encode(self::$__translations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_FORCE_OBJECT));
+			return vsprintf($key, $params);
+		}
 		return vsprintf(self::$__translations[$key], $params);
 	}
 	
