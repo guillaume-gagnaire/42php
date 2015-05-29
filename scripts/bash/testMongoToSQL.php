@@ -2,6 +2,8 @@
 
 include '../init.php';
 
+Conf::set('pdo.dsn', "mysql:dbname=test;unix_socket=/tmp/mysql.sock");
+
 Db::get('select 1');
 
 var_dump(Db::where([
