@@ -1,1 +1,14 @@
-{}
+{
+    "Adresse email": "Adresse email",
+    "Ex: nom.prenom@site.com": "Ex: nom.prenom@site.com",
+    "Mot de passe": "Mot de passe",
+    "Connexion": "Connexion",
+    "Mot de passe oublié ?": "Mot de passe oublié ?",
+    "L'adresse email ou le mot de passe sont incorrects. Veuillez réessayer.": "L'adresse email ou le mot de passe sont incorrects. Veuillez réessayer.",
+    "Créer un compte": "Créer un compte",
+    "Confirmez": "Confirmez",
+    "Créer mon compte": "Créer mon compte",
+    "Les mots de passe ne correspondent pas": "Les mots de passe ne correspondent pas",
+    "Une ou plusieurs erreurs sont survenues :": "Une ou plusieurs erreurs sont survenues :",
+    "L'adresse email n'est pas valide": "L'adresse email n'est pas valide"
+}

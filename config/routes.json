@@ -20,11 +20,25 @@
             "en": "/logout"
         }
     },
+    "register": {
+        "controller": "AuthController@register",
+        "routes":  {
+            "fr": "/inscription",
+            "en": "/register"
+        }
+    },
     "password-forgot": {
         "controller": "AuthController@passwordForgot",
         "routes": {
             "fr": "/mot-de-passe-oublie",
             "en": "/password-forgot"
+        }
+    },
+    "admin": {
+        "controller": "AdminController@index",
+        "routes":  {
+            "fr": "/admin",
+            "en": "/admin"
         }
     }
 }

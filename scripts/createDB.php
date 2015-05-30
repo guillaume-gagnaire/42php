@@ -28,7 +28,7 @@ $queries = [
                     `registered` datetime,
                     `admin` tinyint(1),
                     `slug` text,
-                    `lang` text
+                    `lang` text,
                     PRIMARY KEY (`id`)
                 ) DEFAULT CHARSET=utf8'
 ];

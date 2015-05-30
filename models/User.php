@@ -20,7 +20,7 @@ class                           User extends Model {
             $base = Text::slug($this->firstname).'-'.Text::slug($this->lastname);
             $suffix = '';
             $res = true;
-            while (!is_null($res)) {
+            while ($res) {
                 $res = Db::getInstance()->User->findOne([
                     'slug' => $base . $suffix
                 ]);

@@ -1,6 +1,6 @@
 {
     "cookie": {
-        "domain": "*.domain.com"
+        "domain": ""
     },
     "page": {
         "title": "",
@@ -12,6 +12,12 @@
             "twitter": {
                 "username": "@HeavyNounours"
             }
+        }
+    },
+    "auth": {
+        "users": {
+            "canRegister": true,
+            "path-after-register": "/admin"
         }
     }
 }

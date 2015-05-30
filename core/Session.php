@@ -46,7 +46,7 @@ class 							Session {
                     API::special('deleteToken', true);
                 }
             } else
-                self::$__data = JSON::toArray($d['data']);
+                self::$__data = json_decode($d['data'], true);
         }
         self::save();
 
@@ -70,7 +70,7 @@ class 							Session {
          *
          * For the API mode, we can force the session creation with Session::create()
          */
-        if (!self::$apiMode) {
+        if (!self::$apiMode && self::$id === false) {
             self::$id = Db::getInstance()->Sessions->insert($d);
         } elseif (self::$id !== false) {
             Db::getInstance()->Sessions->update([
@@ -78,7 +78,8 @@ class 							Session {
             ], $d);
         }
         if (!self::$apiMode) {
-            setcookie('token', self::$id, strtotime(self::$__expire), '/', Conf::get('cookie.domain'), false, false); // The cookie must be accessible by javascript.
+            if (!headers_sent())
+                setcookie('token', (string)self::$id, strtotime(self::$__expire), '/', Conf::get('cookie.domain'), false, false); // The cookie must be accessible by javascript.
         }
     }
 

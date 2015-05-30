@@ -15,7 +15,7 @@ class                                   Model {
                     'id' => $id
                 ]);
             }
-            if (!is_null($data)) {
+            if (is_array($data)) {
                 foreach ($data as $k => $v) {
                     if (property_exists($this, $k))
                         $this->$k = $v;
@@ -117,7 +117,7 @@ class                                   Model {
     public static function              findOne($query = []) {
         $collection = get_called_class();
         $data = Db::getInstance()->$collection->findOne($query);
-        if (is_null($data))
+        if (!$data)
             return false;
         return new $collection($data['id'], $data);
     }
