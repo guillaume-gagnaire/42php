@@ -22,6 +22,12 @@ class                               Auth {
         return Session::get('user', false);
     }
 
+    public static function          mustBeLogged($needToBeAdmin = false) {
+        if (self::logged() && (self::admin() || !$needToBeAdmin))
+            return;
+        Redirect::http(Argv::createUrl('login').'?redirect='.urlencode(Conf::get('url')));
+    }
+
     public static function 			setCurrentUser($uid, $user = false) {
         if (!$user)
             $user = new User($uid);

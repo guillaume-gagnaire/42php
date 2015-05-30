@@ -5,5 +5,26 @@
             "fr": "/{path}?",
             "en": "/{path}?"
         }
+    },
+    "login": {
+        "controller": "AuthController@login",
+        "routes": {
+            "fr": "/connexion",
+            "en": "/login"
+        }
+    },
+    "logout": {
+        "controller": "AuthController@logout",
+        "routes": {
+            "fr": "/deconnexion",
+            "en": "/logout"
+        }
+    },
+    "password-forgot": {
+        "controller": "AuthController@passwordForgot",
+        "routes": {
+            "fr": "/mot-de-passe-oublie",
+            "en": "/password-forgot"
+        }
     }
 }
