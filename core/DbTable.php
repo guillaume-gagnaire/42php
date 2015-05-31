@@ -23,7 +23,6 @@ class DbTable {
             $values[] = $this->pdo->quote($v);
         }
         $query = 'INSERT INTO `'.$this->tableName.'` ('.implode(', ', $keys).') VALUES ('.implode(', ', $values).')';
-        var_dump($query);
         $this->pdo->exec($query);
         return $this->pdo->lastInsertId();
     }

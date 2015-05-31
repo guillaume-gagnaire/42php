@@ -9,7 +9,9 @@
 
         <!-- Facebook share -->
         <meta property="og:title" content="<?= str_replace('"', '&quot;', Conf::get('page.title')) ?>">
-        <meta property="og:image" content="<?= str_replace('"', '&quot;', Conf::get('page.share.image')) ?>">
+        <?php if (Conf::get('page.share.image', '') != '') { ?>
+            <meta property="og:image" content="<?= str_replace('"', '&quot;', Conf::get('page.share.image')) ?>">
+        <?php } ?>
         <meta property="og:description" content="<?= str_replace('"', '&quot;', Conf::get('page.description')) ?>">
 
         <!-- Twitter share -->
@@ -17,7 +19,9 @@
         <meta name="twitter:site" content="<?= Conf::get('page.share.twitter.username') ?>" />
         <meta name="twitter:title" content="<?= str_replace('"', '&quot;', Conf::get('page.title')) ?>" />
         <meta name="twitter:description" content="<?= str_replace('"', '&quot;', Conf::get('page.description')) ?>" />
-        <meta name="twitter:image" content="<?= str_replace('"', '&quot;', Conf::get('page.share.image')) ?>" />
+        <?php if (Conf::get('page.share.image', '') != '') { ?>
+            <meta name="twitter:image" content="<?= str_replace('"', '&quot;', Conf::get('page.share.image')) ?>" />
+        <?php } ?>
 
         <?php
         // alternate links for multilingual

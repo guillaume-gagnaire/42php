@@ -24,7 +24,7 @@ class                           User extends Model {
                 $res = Db::getInstance()->User->findOne([
                     'slug' => $base . $suffix
                 ]);
-                if (!is_null($res))
+                if ($res)
                     $suffix = $suffix == '' ? 1 : intval($suffix) + 1;
             }
             $this->slug = $base . $suffix;

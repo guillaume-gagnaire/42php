@@ -30,6 +30,16 @@ $queries = [
                     `slug` text,
                     `lang` text,
                     PRIMARY KEY (`id`)
+                ) DEFAULT CHARSET=utf8',
+    'Page' => 	'CREATE TABLE IF NOT EXISTS `Page` (
+                    `id` int(11) NOT NULL AUTO_INCREMENT,
+                    `path` text,
+                    `file` text,
+                    `title` text,
+                    `description` text,
+                    `keywords` text,
+                    `image` text,
+                    PRIMARY KEY (`id`)
                 ) DEFAULT CHARSET=utf8'
 ];
 

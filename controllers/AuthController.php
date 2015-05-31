@@ -30,7 +30,7 @@ class                       AuthController extends Controller {
     public function         register() {
         $errors = [];
 
-        if (isset($_POST['email'], $_POST['password'], $_POST['password2'])) {
+        if (isset($_POST['email'], $_POST['password'], $_POST['password2'], $_POST['genre'], $_POST['lastname'], $_POST['firstname'])) {
             // check if mail is valid
             if (!strlen($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
                 $errors[] = _t("L'adresse email n'est pas valide");
@@ -49,7 +49,11 @@ class                       AuthController extends Controller {
             if (!sizeof($errors)) {
                 $user = new User();
                 $user->email = $_POST['email'];
+                $user->genre = $_POST['genre'];
+                $user->firstname = $_POST['firstname'];
+                $user->lastname = $_POST['lastname'];
                 $user->setPassword($_POST['password']);
+                $user->registered = date('Y-m-d H:i:s');
                 $user->save();
                 if ($user->id) {
                     Auth::setCurrentUser($user->id, $user);
@@ -61,7 +65,10 @@ class                       AuthController extends Controller {
             'errors' => $errors,
             'email' => isset($_POST['email']) ? $_POST['email'] : '',
             'password' => isset($_POST['password']) ? $_POST['password'] : '',
-            'password2' => isset($_POST['password2']) ? $_POST['password2'] : ''
+            'password2' => isset($_POST['password2']) ? $_POST['password2'] : '',
+            'genre' => isset($_POST['genre']) ? $_POST['genre'] : '',
+            'firstname' => isset($_POST['firstname']) ? $_POST['firstname'] : '',
+            'lastname' => isset($_POST['lastname']) ? $_POST['lastname'] : ''
         ]);
     }
 

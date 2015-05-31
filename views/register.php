@@ -19,6 +19,34 @@
         <form method="post" action="">
             <div class="row">
                 <div class="small-12 medium-3 column text-right small-only-text-left">
+                    <label class="inline"><?=_t("Civilité") ?></label>
+                </div>
+                <div class="small-12 medium-9 column">
+                    <select name="genre">
+                        <?php foreach (['M.', 'Mme.'] as $item) { ?>
+                            <option value="<?=$item ?>" <?= $item == $genre ? 'selected="selected"': '' ?>><?=$item ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 medium-3 column text-right small-only-text-left">
+                    <label class="inline"><?=_t("Prénom") ?></label>
+                </div>
+                <div class="small-12 medium-9 column">
+                    <input type="text" name="firstname" required="required" value="<?=str_replace('"', '&quot;', $firstname) ?>" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 medium-3 column text-right small-only-text-left">
+                    <label class="inline"><?=_t("Nom") ?></label>
+                </div>
+                <div class="small-12 medium-9 column">
+                    <input type="text" name="lastname" required="required" value="<?=str_replace('"', '&quot;', $lastname) ?>" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 medium-3 column text-right small-only-text-left">
                     <label class="inline"><?=_t("Adresse email") ?></label>
                 </div>
                 <div class="small-12 medium-9 column">

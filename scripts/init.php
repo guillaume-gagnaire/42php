@@ -1,5 +1,20 @@
 <?php
 
+if (!isset($_SERVER['HTTP_HOST']))
+    $_SERVER['HTTP_HOST'] = 'cli';
+if (!isset($_SERVER['REQUEST_URI'])) {
+    $p = [];
+    if (isset($argv)) {
+        $_GET['argv'] = [];
+        foreach ($argv as $i => $a)
+            if ($i) {
+                $p[] = 'argv[' . ($i - 1) . ']=' . urlencode($a);
+                $_GET['argv'][] = $argv;
+            }
+    }
+    $_SERVER['REQUEST_URI'] = '/?'.implode('&', $p);
+}
+
 ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(-1);
