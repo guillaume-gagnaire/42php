@@ -40,7 +40,22 @@ $queries = [
                     `keywords` text,
                     `image` text,
                     PRIMARY KEY (`id`)
-                ) DEFAULT CHARSET=utf8'
+                ) DEFAULT CHARSET=utf8',
+    'Article' => 	'CREATE TABLE IF NOT EXISTS `Article` (
+                        `id` int(11) NOT NULL AUTO_INCREMENT,
+                        `lang` text,
+                        `title` text,
+                        `intro` text,
+                        `content` text,
+                        `image` text,
+                        `keywords` text,
+                        `date` date,
+                        `author` int(11),
+                        `category` int(11),
+                        `slug` text,
+                        `enabled` tinyint(1),
+                        PRIMARY KEY (`id`)
+                    ) DEFAULT CHARSET=utf8'
 ];
 
 foreach ($queries as $k => $v) {
