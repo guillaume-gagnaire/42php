@@ -10,7 +10,7 @@ class                   AdminController extends Controller {
 		$this->setupView();
         $this->addMethods();
         $this->handleRequests();
-        $this->showAdmin();
+        return $this->showAdmin();
     }
 
 	private function 	setupView() {
@@ -107,7 +107,7 @@ class                   AdminController extends Controller {
     }
 
     private function    showAdmin() {
-
+		return View::render('admin/index.php');
     }
 }
 
