@@ -28,8 +28,8 @@ class                   AdminController extends Controller {
 	private function 	getNav() {
 		$str = '';
 		foreach ($this->methods as $k => $v) {
-			$str .= '<li'.($this->viewParams['nav'] == $k ? ' class="active"' : '').'>
-				<a href="'.Argv::createUrl('admin').'?module='.$k.'">'.(isset($v->params['title']) ? $v->params['title'] : ucfirst($k)).'</a>
+			$str .= '<li'.($this->viewParams['selectedItem'] == $k ? ' class="active"' : '').'>
+				<a href="'.Argv::createUrl('admin').'?module='.$k.'">'.(isset($v->params['icon']) ? '<i class="'.$v->params['icon'].'"></i>' : '').(isset($v->params['title']) ? $v->params['title'] : ucfirst($k)).'</a>
 			</li>';
 		}
 		return $str;
@@ -40,6 +40,7 @@ class                   AdminController extends Controller {
         $this->methods['dashboard'] = new AdminTable([
 	        'mode' => 'standalone',
             'title' => _t('Tableau de bord'),
+            'icon' => 'fi-home',
             'module' => 'dashboard',
 	        'handler' => function() {
 		        return View::partial('admin/dashboard');
@@ -53,6 +54,7 @@ class                   AdminController extends Controller {
             'table' => 'User',
             'module' => 'users',
             'title' => _t('Utilisateurs'),
+            'icon' => 'fi-torsos-all',
             'fields' => [
                 'email' => [
                     'type' => 'email',

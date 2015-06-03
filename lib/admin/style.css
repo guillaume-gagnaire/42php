@@ -755,3 +755,9 @@ input[type="text"] {
     line-height: 50px;
     padding: 0 15px;
 }
+
+.side-nav i {
+    font-size: 28px;
+    margin: 0 15px 0 0;
+    vertical-align: middle;
+}
