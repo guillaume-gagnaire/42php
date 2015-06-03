@@ -6,6 +6,10 @@ class                   AdminTable {
     public function     __construct($params = []) {
         $this->params = $params;
     }
+    
+    public function 	render() {
+	    
+    }
 }
 
 ?>

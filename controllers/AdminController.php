@@ -2,18 +2,27 @@
 
 class                   AdminController extends Controller {
     public              $methods = [];
-
+	public 				$viewParams = [];
+	
     public function     index($p) {
         Auth::mustBeLogged(true);
-
+		
+		$this->setupView();
         $this->addMethods();
         $this->handleRequests();
         $this->showAdmin();
     }
 
+	private function 	setupView() {
+		$this->viewParams = [
+			'content' => '',
+			'selectedItem' => 'dashboard'
+		];
+	}
+
     private function    addMethods() {
         // Users
-        $this->methods['Users'] = new AdminTable([
+        $this->methods['users'] = new AdminTable([
             'mode' => 'auto',
             'table' => 'User',
             'title' => 'Utilisateurs',
@@ -65,10 +74,36 @@ class                   AdminController extends Controller {
                 ]
             ]
         ]);
+        
+        // Test for local method
+        $this->methods['localMethodTest'] = new AdminTable([
+	        'mode' => 'standalone',
+	        'method' => 'testMethod'
+        ]);
+        
+        // Test for anonymous function
+        $this->methods['localMethodTest'] = new AdminTable([
+	        'mode' => 'standalone',
+	        'handler' => function() {
+		        if (isset($_POST['validate'])) {
+			        // Do register process
+		        }
+		        return View::display('admin/anonymousFunctionTest.php');
+	        }
+        ]);
     }
 
     private function    handleRequests() {
-
+		$toLoad = 'dashboard';
+		if (isset($_GET['module']))
+			$toLoad = $_GET['module'];
+		
+		if (!isset($this->methods[$toLoad])) {
+			$this->viewParams['content'] = View::partial('404');
+		} else {
+			$this->viewParams['content'] = $this->methods[$toLoad]->render();
+			$this->viewParams['selectedItem'] = $toLoad;
+		}
     }
 
     private function    showAdmin() {
