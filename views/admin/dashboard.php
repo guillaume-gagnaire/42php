@@ -1,0 +1,1 @@
+<h1><?=_t("Tableau de bord") ?></h1>

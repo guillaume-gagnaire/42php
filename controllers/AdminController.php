@@ -7,8 +7,8 @@ class                   AdminController extends Controller {
     public function     index($p) {
         Auth::mustBeLogged(true);
 		
-		$this->setupView();
         $this->addMethods();
+		$this->setupView();
         $this->handleRequests();
         return $this->showAdmin();
     }
@@ -16,16 +16,37 @@ class                   AdminController extends Controller {
 	private function 	setupView() {
 		$this->viewParams = [
 			'content' => '',
-			'selectedItem' => 'dashboard'
+			'selectedItem' => 'dashboard',
+			'nav' => ''
 		];
+	}
+	
+	private function 	getNav() {
+		$str = '';
+		foreach ($this->methods as $k => $v) {
+			$str .= '<li'.($this->viewParams['nav'] == $k ? ' class="active"' : '').'>
+				<a href="'.Argv::createUrl('admin').'?module='.$k.'">'.(isset($v['title']) ? $v['title'] : ucfirst($k)).'</a>
+			</li>';
+		}
+		return $str;
 	}
 
     private function    addMethods() {
+        // Test for anonymous function
+        $this->methods['dashboard'] = new AdminTable([
+	        'mode' => 'standalone',
+            'title' => _t('Tableau de bord'),
+	        'handler' => function() {
+		        return View::partial('admin/dashboard.php');
+	        }
+        ]);
+        
+        
         // Users
         $this->methods['users'] = new AdminTable([
             'mode' => 'auto',
             'table' => 'User',
-            'title' => 'Utilisateurs',
+            'title' => _t('Utilisateurs'),
             'fields' => [
                 'email' => [
                     'type' => 'email',
@@ -75,20 +96,15 @@ class                   AdminController extends Controller {
             ]
         ]);
         
-        // Test for local method
-        $this->methods['localMethodTest'] = new AdminTable([
-	        'mode' => 'standalone',
-	        'method' => 'testMethod'
-        ]);
-        
         // Test for anonymous function
         $this->methods['localMethodTest'] = new AdminTable([
 	        'mode' => 'standalone',
+            'title' => 'test',
 	        'handler' => function() {
 		        if (isset($_POST['validate'])) {
 			        // Do register process
 		        }
-		        return View::display('admin/anonymousFunctionTest.php');
+		        return View::partial('admin/anonymousFunctionTest.php');
 	        }
         ]);
     }
@@ -107,6 +123,7 @@ class                   AdminController extends Controller {
     }
 
     private function    showAdmin() {
+	    $this->viewParams['nav'] = $this->getNav();
 		return View::render('admin/index.php');
     }
 }
