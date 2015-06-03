@@ -14,6 +14,7 @@ class                           User extends Model {
     public                      $admin = false;
     public                      $slug;
     public                      $lang;
+    public                      $photo;
 
     public function             beforeSave() {
         if ($this->slug == '') {

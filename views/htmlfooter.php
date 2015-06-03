@@ -3,6 +3,9 @@
         <script type="text/javascript">
             $(document).foundation();
         </script>
+        <?php foreach (Conf::get('page.js', []) as $script) { ?>
+            <script type="text/javascript" src="<?=$script ?>"></script>
+        <?php } ?>
         <?php $a = Conf::get('page.analytics', ''); if ($a != '') { ?>
             <script type="text/javascript">
                 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

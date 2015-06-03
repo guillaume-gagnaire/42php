@@ -13,7 +13,9 @@
                 "username": "@HeavyNounours"
             }
         },
-        "analytics": ""
+        "analytics": "",
+        "js": [],
+        "css": []
     },
     "auth": {
         "users": {

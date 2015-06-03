@@ -19,13 +19,17 @@ class                   AdminController extends Controller {
 			'selectedItem' => 'dashboard',
 			'nav' => ''
 		];
+        Conf::append('page.js', '/lib/admin/menu.js');
+        Conf::append('page.css', 'https://fonts.googleapis.com/css?family=Roboto:400,300');
+        Conf::append('page.css', '/lib/foundation-icons/foundation-icons.css');
+        Conf::append('page.css', '/lib/admin/style.css');
 	}
 	
 	private function 	getNav() {
 		$str = '';
 		foreach ($this->methods as $k => $v) {
 			$str .= '<li'.($this->viewParams['nav'] == $k ? ' class="active"' : '').'>
-				<a href="'.Argv::createUrl('admin').'?module='.$k.'">'.(isset($v['title']) ? $v['title'] : ucfirst($k)).'</a>
+				<a href="'.Argv::createUrl('admin').'?module='.$k.'">'.(isset($v->params['title']) ? $v->params['title'] : ucfirst($k)).'</a>
 			</li>';
 		}
 		return $str;
@@ -36,8 +40,9 @@ class                   AdminController extends Controller {
         $this->methods['dashboard'] = new AdminTable([
 	        'mode' => 'standalone',
             'title' => _t('Tableau de bord'),
+            'module' => 'dashboard',
 	        'handler' => function() {
-		        return View::partial('admin/dashboard.php');
+		        return View::partial('admin/dashboard');
 	        }
         ]);
         
@@ -46,6 +51,7 @@ class                   AdminController extends Controller {
         $this->methods['users'] = new AdminTable([
             'mode' => 'auto',
             'table' => 'User',
+            'module' => 'users',
             'title' => _t('Utilisateurs'),
             'fields' => [
                 'email' => [
@@ -95,25 +101,13 @@ class                   AdminController extends Controller {
                 ]
             ]
         ]);
-        
-        // Test for anonymous function
-        $this->methods['localMethodTest'] = new AdminTable([
-	        'mode' => 'standalone',
-            'title' => 'test',
-	        'handler' => function() {
-		        if (isset($_POST['validate'])) {
-			        // Do register process
-		        }
-		        return View::partial('admin/anonymousFunctionTest.php');
-	        }
-        ]);
     }
 
     private function    handleRequests() {
 		$toLoad = 'dashboard';
 		if (isset($_GET['module']))
 			$toLoad = $_GET['module'];
-		
+
 		if (!isset($this->methods[$toLoad])) {
 			$this->viewParams['content'] = View::partial('404');
 		} else {
@@ -124,7 +118,7 @@ class                   AdminController extends Controller {
 
     private function    showAdmin() {
 	    $this->viewParams['nav'] = $this->getNav();
-		return View::render('admin/index.php');
+		return View::render('admin/index', $this->viewParams);
     }
 }
 

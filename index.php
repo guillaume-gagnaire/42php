@@ -16,6 +16,8 @@ if (!$route) {
     Http::throw404(false);
 }
 
+Stats::log();
+
 echo Controller::run($route['controller'], $route['params']);
 
 ?>

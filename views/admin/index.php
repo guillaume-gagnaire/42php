@@ -1,39 +1,31 @@
-<link rel="stylesheet" type="text/css" href="/lib/admin/foundation.css" />
 <div class="row full-width wrapper">
     <div class="large-12 columns content-bg">
         <div id="top-menu">
             <div class="row">
                 <div class="large-2 medium-4 small-12 columns top-part-no-padding">
                     <div class="logo-bg">
-                        Administration
+                        <span class="admin-title"><?= _t("Administration") ?></span>
                         <i class="fi-list toggles" data-toggle="hide"></i>
                     </div>
                 </div>
                 <div class="large-10 medium-8 small-12 columns top-menu">
                     <div class="row">
                         <div class="large-6 medium-6 small-12 columns">
-                            <div class="row">
-                                <div class="large-8 columns">
-                                    <input id="Text1" type="text" class="search-text" placeholder="Search" />
-                                </div>
-                            </div>
+                            &nbsp;
                         </div>
                         <div class="large-4 medium-6 small-12 columns text-center">
                             <div class="row">
+                                <div class="small-6 column">&nbsp;</div>
                                 <div class="medium-3 small-3 columns">
-                                    <div class="notification">
-                                        <i class="fi-mail"></i>
-                                        <span class="mail">4</span>
-                                    </div>
-                                </div>
-                                <div class="medium-3 small-3 columns">
-                                    <div class="notification">
-                                        <i class="fi-megaphone"></i>
-                                        <span class="megaphone">5</span>
-                                    </div>
-                                </div>
-                                <div class="medium-3 small-3 columns">
-                                    <img src="img/32.jpg" alt="picture" class="top-bar-picture" />
+                                    <a href="<?=Argv::createUrl('admin').'?module=users&id='.Session::get('user.id') ?>">
+                                        <?php if (Session::get('user.photo', '') == '') { ?>
+                                            <div class="notification">
+                                                <i class="fi-torso" style="font-size: 32px; color: #fff"></i>
+                                            </div>
+                                        <?php } else { ?>
+                                            <span class="round-photo" style="background-image: url(<?=Session::get('user.photo', '') ?>)"></span>
+                                        <?php } ?>
+                                    </a>
                                 </div>
                                 <div class="medium-3 small-3 columns">
                                     <a href="<?=Argv::createUrl('logout') ?>"><i class="fi-power power-off"></i></a>

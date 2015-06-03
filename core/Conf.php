@@ -29,24 +29,44 @@ class 							Conf {
 			}
 		}
 	}
-	
-	private static function 	recursiveSet($keys, $value, $data) {
-		$insertValue = sizeof($keys) == 1;
-		$key = array_shift($keys);
-		
-		if ($insertValue) {
-			$data[$key] = $value;
-			return $data;
-		}
-		$data[$key] = self::recursiveSet($keys, $value, isset($data[$key]) ? $data[$key] : []);
-		
-		return $data;
-	}
-	
-	public static function 		set($k, $v) {
-		$k = explode('.', $k);
-		self::$__configuration = self::recursiveSet($k, $v, self::$__configuration);
-	}
+
+    private static function 	recursiveSet($keys, $value, $data) {
+        $insertValue = sizeof($keys) == 1;
+        $key = array_shift($keys);
+
+        if ($insertValue) {
+            $data[$key] = $value;
+            return $data;
+        }
+        $data[$key] = self::recursiveSet($keys, $value, isset($data[$key]) ? $data[$key] : []);
+
+        return $data;
+    }
+
+    public static function 		set($k, $v) {
+        $k = explode('.', $k);
+        self::$__configuration = self::recursiveSet($k, $v, self::$__configuration);
+    }
+
+    private static function 	recursiveAppend($keys, $value, $data) {
+        $insertValue = sizeof($keys) == 1;
+        $key = array_shift($keys);
+
+        if ($insertValue) {
+            if (!isset($data[$key]))
+                $data[$key] = [];
+            $data[$key][] = $value;
+            return $data;
+        }
+        $data[$key] = self::recursiveAppend($keys, $value, isset($data[$key]) ? $data[$key] : []);
+
+        return $data;
+    }
+
+    public static function 		append($k, $v) {
+        $k = explode('.', $k);
+        self::$__configuration = self::recursiveAppend($k, $v, self::$__configuration);
+    }
 	
 	/*
 	** Use : Conf::values(function($k, $v){

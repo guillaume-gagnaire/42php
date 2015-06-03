@@ -29,6 +29,7 @@ $queries = [
                     `admin` tinyint(1),
                     `slug` text,
                     `lang` text,
+                    `photo` text,
                     PRIMARY KEY (`id`)
                 ) DEFAULT CHARSET=utf8',
     'Page' => 	'CREATE TABLE IF NOT EXISTS `Page` (
@@ -55,7 +56,16 @@ $queries = [
                         `slug` text,
                         `enabled` tinyint(1),
                         PRIMARY KEY (`id`)
-                    ) DEFAULT CHARSET=utf8'
+                    ) DEFAULT CHARSET=utf8',
+    'Stats' => 	'CREATE TABLE IF NOT EXISTS `Stats` (
+                    `id` int(11) NOT NULL AUTO_INCREMENT,
+                    `user_id` int,
+                    `date` datetime,
+                    `path` text,
+                    `ip` text,
+                    `lang` text,
+                    PRIMARY KEY (`id`)
+                ) DEFAULT CHARSET=utf8'
 ];
 
 foreach ($queries as $k => $v) {
