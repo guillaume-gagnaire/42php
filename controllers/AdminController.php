@@ -54,16 +54,16 @@ class                   AdminController extends Controller {
             'table' => 'User',
             'module' => 'users',
             'title' => _t('Utilisateurs'),
+            'item' => _t('un utilisateur'),
             'icon' => 'fi-torsos-all',
             'fields' => [
-                'email' => [
-                    'type' => 'email',
-                    'unique' => true,
-                    'title' => _t("Adresse e-mail")
-                ],
-                'password' => [
-                    'type' => 'password',
-                    'title' => _t("Mot de passe")
+                'genre' => [
+                    'type' => 'select',
+                    'values' => [
+                        'M.',
+                        'Mme.'
+                    ],
+                    'title' => _t("Civilité")
                 ],
                 'firstname' => [
                     'type' => 'text',
@@ -73,13 +73,18 @@ class                   AdminController extends Controller {
                     'type' => 'text',
                     'title' => _t("Nom")
                 ],
-                'genre' => [
-                    'type' => 'select',
-                    'values' => [
-                        'M.',
-                        'Mme.'
-                    ],
-                    'title' => _t("Civilité")
+                'email' => [
+                    'type' => 'email',
+                    'unique' => true,
+                    'title' => _t("Adresse e-mail")
+                ],
+                'password' => [
+                    'type' => 'password',
+                    'title' => _t("Mot de passe")
+                ],
+                'photo' => [
+	                'type' => 'image',
+	                'title' => 'Photo de profil'
                 ],
                 'registered' => [
                     'type' => 'datetime',
