@@ -19,7 +19,7 @@
 			
 			<div class="row">
 				<div class="small-12 column">
-					<button><?=_t("Enregistrer les modifications") ?>
+					<button><?=_t("Enregistrer les modifications") ?></button>
 				</div>
 			</div>
 		</form>
