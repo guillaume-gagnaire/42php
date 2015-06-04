@@ -761,3 +761,9 @@ input[type="text"] {
     margin: 0 15px 0 0;
     vertical-align: middle;
 }
+
+.admin-icons a {
+    display: inline-block;
+    margin: 0 10px;
+    font-size: 18px;
+}

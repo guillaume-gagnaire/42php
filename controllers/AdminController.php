@@ -19,6 +19,8 @@ class                   AdminController extends Controller {
 			'selectedItem' => 'dashboard',
 			'nav' => ''
 		];
+        Conf::set('page.js', []);
+        Conf::set('page.css', []);
         Conf::append('page.js', '/lib/admin/menu.js');
         Conf::append('page.css', 'https://fonts.googleapis.com/css?family=Roboto:400,300');
         Conf::append('page.css', '/lib/foundation-icons/foundation-icons.css');
@@ -41,7 +43,6 @@ class                   AdminController extends Controller {
 	        'mode' => 'standalone',
             'title' => _t('Tableau de bord'),
             'icon' => 'fi-home',
-            'module' => 'dashboard',
 	        'handler' => function() {
 		        return View::partial('admin/dashboard');
 	        }
@@ -52,7 +53,6 @@ class                   AdminController extends Controller {
         $this->methods['users'] = new AdminTable([
             'mode' => 'auto',
             'table' => 'User',
-            'module' => 'users',
             'title' => _t('Utilisateurs'),
             'item' => _t('un utilisateur'),
             'icon' => 'fi-torsos-all',
@@ -83,7 +83,7 @@ class                   AdminController extends Controller {
                     'title' => _t("Mot de passe")
                 ],
                 'photo' => [
-	                'type' => 'image',
+	                'type' => ['image', '256x256'],
 	                'title' => 'Photo de profil'
                 ],
                 'registered' => [
@@ -102,11 +102,11 @@ class                   AdminController extends Controller {
                     'title' => _t("Référence")
                 ],
                 'lang' => [
-                    'type' => 'select',
-                    'values' => i18n::$__acceptedLanguages,
+                    'type' => ['select', i18n::$__acceptedLanguages],
                     'title' => _t("Langue")
                 ]
-            ]
+            ],
+            'header' => 'photo|email|registered|admin'
         ]);
     }
 
@@ -118,6 +118,8 @@ class                   AdminController extends Controller {
 		if (!isset($this->methods[$toLoad])) {
 			$this->viewParams['content'] = View::partial('404');
 		} else {
+            Conf::set('admin.module', $toLoad);
+            Conf::set('admin.url', Argv::createUrl('admin').'?module='.$toLoad);
 			$this->viewParams['content'] = $this->methods[$toLoad]->render();
 			$this->viewParams['selectedItem'] = $toLoad;
 		}
