@@ -14,7 +14,7 @@
  *      select
  */
 class                           AdminType {
-    public static function      text($key, $value, $params, $mode) {
+    public static function      process_text($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
                 return $value;
@@ -31,7 +31,7 @@ class                           AdminType {
         }
     }
 
-    public static function      password($key, $value, $params, $mode) {
+    public static function      process_password($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
                 return '******';
@@ -53,7 +53,7 @@ class                           AdminType {
         }
     }
 
-    public static function      email($key, $value, $params, $mode) {
+    public static function      process_email($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
                 return $value;
@@ -70,7 +70,7 @@ class                           AdminType {
         }
     }
 
-    public static function      image($key, $value, $params, $mode) {
+    public static function      process_image($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
                 if (!strlen($value))
@@ -86,12 +86,21 @@ class                           AdminType {
                 return '<input type="file" name="'.$key.'" />';
                 break;
             case 'save':
+                $value = Upload::job($key, false, ['jpg', 'jpeg', 'png', 'gif']);
+            	if (!$value)
+            		return null;
+            	if ($params && preg_match('/^[0-9]+x[0-9]+$/', $params)) {
+	            	list($width, $height) = explode('x', $params);
+	            	$i = new Image(ROOT.$value);
+	            	$i->resize(intval($width), intval($height), false);
+	            	$i->save();
+            	}
                 return $value;
                 break;
         }
     }
 
-    public static function      file($key, $value, $params, $mode) {
+    public static function      process_file($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
                 return '<a href="'.$value.'" target="_blank">'._t("Accéder au fichier").'</a>';
@@ -103,12 +112,15 @@ class                           AdminType {
                 return '<input type="file" name="'.$key.'" />';
                 break;
             case 'save':
+            	$value = Upload::job($key);
+            	if (!$value)
+            		return null;
                 return $value;
                 break;
         }
     }
 
-    public static function      bool($key, $value, $params, $mode) {
+    public static function      process_bool($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
                 return intval($value) == 1 ? _t("Oui") : _t("Non");
@@ -125,7 +137,7 @@ class                           AdminType {
         }
     }
 
-    public static function      date($key, $value, $params, $mode) {
+    public static function      process_date($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
                 return $value;
@@ -142,7 +154,7 @@ class                           AdminType {
         }
     }
 
-    public static function      datetime($key, $value, $params, $mode) {
+    public static function      process_datetime($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
                 return $value;
@@ -159,7 +171,7 @@ class                           AdminType {
         }
     }
 
-    public static function      select($key, $value, $params, $mode) {
+    public static function      process_select($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
                 return $value;
