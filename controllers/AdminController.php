@@ -58,11 +58,10 @@ class                   AdminController extends Controller {
             'icon' => 'fi-torsos-all',
             'fields' => [
                 'genre' => [
-                    'type' => 'select',
-                    'values' => [
+                    'type' => ['select', [
                         'M.',
                         'Mme.'
-                    ],
+                    ]],
                     'title' => _t("Civilité")
                 ],
                 'firstname' => [
@@ -88,7 +87,7 @@ class                   AdminController extends Controller {
                 ],
                 'registered' => [
                     'type' => 'datetime',
-                    'default' => 'now',
+                    'default' => date('Y-m-d H:i:s'),
                     'title' => _t("Date d'inscription")
                 ],
                 'admin' => [
@@ -99,7 +98,20 @@ class                   AdminController extends Controller {
                 'slug' => [
                     'type' => 'text',
                     'unique' => true,
-                    'title' => _t("Référence")
+                    'title' => _t("Référence"),
+                    'ifEmpty' => function() {
+                        $base = Text::slug($_POST['firstname']).'-'.Text::slug($_POST['lastname']);
+                        $suffix = '';
+                        $res = true;
+                        while ($res) {
+                            $res = Db::getInstance()->User->findOne([
+                                'slug' => $base . $suffix
+                            ]);
+                            if ($res)
+                                $suffix = $suffix == '' ? 1 : intval($suffix) + 1;
+                        }
+                        return $base . $suffix;
+                    }
                 ],
                 'lang' => [
                     'type' => ['select', i18n::$__acceptedLanguages],
@@ -120,6 +132,7 @@ class                   AdminController extends Controller {
 			$this->viewParams['content'] = View::partial('404');
 		} else {
             Conf::set('admin.module', $toLoad);
+            Conf::set('admin.moduleTitle', $this->methods[$toLoad]->params['title']);
             Conf::set('admin.url', Argv::createUrl('admin').'?module='.$toLoad);
 			$this->viewParams['content'] = $this->methods[$toLoad]->render();
 			$this->viewParams['selectedItem'] = $toLoad;

@@ -8,6 +8,8 @@ class                       Stats extends Model {
     public                  $lang;
 
     public static function  log() {
+        if (Conf::get('route.name', '') == 'admin')
+            return;
         $n = new Stats;
         $n->ip = IP::get();
         $n->date = date('Y-m-d H:i:s');

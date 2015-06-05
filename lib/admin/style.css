@@ -742,8 +742,8 @@ input[type="text"] {
     -moz-border-radius: 100%;
     border-radius: 100%;
     display: inline-block;
-    height: 32px;
-    width: 32px;
+    height: 50px;
+    width: 50px;
     background-repeat: none;
     background-position: center;
     background-size: cover;
@@ -766,4 +766,17 @@ input[type="text"] {
     display: inline-block;
     margin: 0 10px;
     font-size: 18px;
+}
+
+.admin-item-preview .row {
+    padding: 8px 0;
+}
+
+.admin-ariane {
+    margin: 20px 0;
+}
+
+.admin-ariane a {
+    font-size: 10px;
+    font-weight: 400;
 }

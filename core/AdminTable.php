@@ -96,7 +96,7 @@ class                   AdminTable {
         ]);
     }
 
-    private function    auto_edit($id) {
+    private function    auto_edit($id, $unique_alerts = []) {
 		$values = [];
 		foreach ($this->params['fields'] as $k => $v) {
 			$values[$k] = isset($v['default']) ? $v['default'] : '';
@@ -111,7 +111,7 @@ class                   AdminTable {
 		}
 		
 		$editing = $values;
-		foreach ($editing as $k => $v) {
+		foreach ($values as $k => $v) {
 			if (isset($_POST[$k]))
 				$editing[$k] = $_POST[$k];
 		}
@@ -125,22 +125,103 @@ class                   AdminTable {
 		foreach ($this->params['fields'] as $k => $v) {
 			$titles[$k] = isset($v['title']) ? $v['title'] : ucfirst($k);
 		}
-		
+
+        $status = '';
+        if (isset($_GET['status']))
+            $status = $_GET['status'];
+
 		return View::partial('admin/edit', [
 			'id' => $id,
+            'itemtitle' => $this->params['item'],
 			'types' => $types,
 			'values' => $values,
 			'editing' => $editing,
-			'titles' => $titles
+			'titles' => $titles,
+            'status' => $status,
+            'unique' => $unique_alerts
 		]);
     }
 
     private function    auto_save($id) {
+        $set = [];
+        $unique_alert = [];
+        foreach ($this->params['fields'] as $k => $v) {
+            list($type, $params) = $this->getType($k);
+            $method = "process_$type";
+            $value = AdminType::$method($k, isset($_POST[$k]) ? $_POST[$k] : '', $params, 'save');
 
+            if (!is_null($value)) {
+                if (trim($value) == '' && isset($this->params['fields'][$k]['ifEmpty']))
+                    $value = $this->params['fields'][$k]['ifEmpty']();
+
+                // Check unique
+                if ($value != '' && isset($this->params['fields'][$k]['unique']) && $this->params['fields'][$k]['unique']) {
+                    $check = Db::get('SELECT `id` FROM `'.$this->params['table'].'` WHERE `'.$k.'`='.Db::quote($value).' AND `id`!='.intval($id));
+                    if ($check) {
+                        $unique_alert[] = $k;
+                    }
+                }
+                $set[] = '`'.$k.'`='.Db::quote($value);
+            }
+        }
+
+        if (sizeof($unique_alert))
+            return $this->auto_edit($id, $unique_alert);
+
+        if (!$id) {
+            $sql = 'INSERT INTO `'.$this->params['table'].'` SET '.implode(', ', $set);
+        } else {
+            $sql = 'UPDATE `'.$this->params['table'].'` SET '.implode(', ', $set).' WHERE `id`='.$id;
+        }
+        Db::exec($sql);
+        if (!$id) {
+            $id = Db::lastId();
+            Redirect::http(Conf::get('admin.url').'&status=saved&id='.$id);
+        }
+        Redirect::http(Conf::get('url').(!isset($_GET['status']) ? '&status=saved' : ''));
     }
 
     private function    auto_delete($id) {
+        if (isset($_POST['delete'])) {
+            Db::exec('DELETE FROM `'.$this->params['table'].'` WHERE `id`='.intval($id));
+            Redirect::http(Conf::get('admin.url'));
+        }
 
+        $values = [];
+        foreach ($this->params['fields'] as $k => $v) {
+            $values[$k] = isset($v['default']) ? $v['default'] : '';
+        }
+
+        if ($id) {
+            $data = Db::get('SELECT * FROM `'.$this->params['table'].'` WHERE `id`='.$id);
+            if ($data) {
+                foreach ($values as $k => $v)
+                    $values[$k] = $data[$k];
+            }
+        }
+
+        $types = [];
+        foreach ($this->params['fields'] as $k => $v) {
+            $types[$k] = $this->getType($k);
+        }
+
+        $titles = [];
+        foreach ($this->params['fields'] as $k => $v) {
+            $titles[$k] = isset($v['title']) ? $v['title'] : ucfirst($k);
+        }
+
+        $status = '';
+        if (isset($_GET['status']))
+            $status = $_GET['status'];
+
+        return View::partial('admin/delete', [
+            'id' => $id,
+            'itemtitle' => $this->params['item'],
+            'types' => $types,
+            'values' => $values,
+            'titles' => $titles,
+            'status' => $status
+        ]);
     }
 
     private function 	standalone() {

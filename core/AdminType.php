@@ -40,7 +40,7 @@ class                           AdminType {
                 return $value;
                 break;
             case 'edit':
-                return '<input type="text" name="'.$key.'" value="'.str_replace('"', '&quot;', $value).'" />';
+                return '<input id="field_'.$key.'" type="text" name="'.$key.'" value="'.str_replace('"', '&quot;', $value).'" />';
                 break;
             case 'save':
                 return $value;
@@ -57,7 +57,7 @@ class                           AdminType {
                 return '******';
                 break;
             case 'edit':
-                return '<input type="password" name="'.$key.'" value="" autocomplete="off" placeholder="'._t("Laissez vide pour ne pas changer de mot de passe").'" /><br />
+                return '<input id="field_'.$key.'" type="password" name="'.$key.'" value="" autocomplete="off" placeholder="'._t("Laissez vide pour ne pas changer de mot de passe").'" />
                         <input type="password" name="'.$key.'_confirm" value="" autocomplete="off" placeholder="'._t("Confirmez").'" />';
                 break;
             case 'save':
@@ -79,7 +79,7 @@ class                           AdminType {
                 return $value;
                 break;
             case 'edit':
-                return '<input type="email" name="'.$key.'" value="'.str_replace('"', '&quot;', $value).'" />';
+                return '<input id="field_'.$key.'" type="email" name="'.$key.'" value="'.str_replace('"', '&quot;', $value).'" />';
                 break;
             case 'save':
                 return $value;
@@ -100,7 +100,7 @@ class                           AdminType {
                 return '<img src="'.$value.'" style="max-height: 32px; max-width: 32px;" alt="" />';
                 break;
             case 'edit':
-                return '<input type="file" name="'.$key.'" />';
+                return '<input id="field_'.$key.'" type="file" name="'.$key.'" style="margin-top: 9px" />';
                 break;
             case 'save':
                 $value = Upload::job($key, false, ['jpg', 'jpeg', 'png', 'gif']);
@@ -126,7 +126,7 @@ class                           AdminType {
                 return '<a href="'.$value.'" target="_blank">'._t("Accéder au fichier").'</a>';
                 break;
             case 'edit':
-                return '<input type="file" name="'.$key.'" />';
+                return '<input id="field_'.$key.'" type="file" name="'.$key.'" style="margin-top: 9px" />';
                 break;
             case 'save':
             	$value = Upload::job($key);
@@ -146,7 +146,7 @@ class                           AdminType {
                 return intval($value) == 1 ? _t("Oui") : _t("Non");
                 break;
             case 'edit':
-                return '<input type="checkbox" name="'.$key.'" value="1"'.(intval($value) == 1 ? ' checked="checked"' : '').' />';
+                return '<input id="field_'.$key.'" type="checkbox" name="'.$key.'" value="1"'.(intval($value) == 1 ? ' checked="checked"' : '').' style="margin-top: 14px" />';
                 break;
             case 'save':
                 return isset($_POST[$key]) ? 1 : 0;
@@ -163,7 +163,7 @@ class                           AdminType {
                 return $value;
                 break;
             case 'edit':
-                return '<input type="text" name="'.$key.'" value="'.str_replace('"', '&quot;', $value).'" />';
+                return '<input id="field_'.$key.'" type="text" name="'.$key.'" value="'.str_replace('"', '&quot;', $value).'" />';
                 break;
             case 'save':
                 return $value;
@@ -180,7 +180,7 @@ class                           AdminType {
                 return $value;
                 break;
             case 'edit':
-                return '<input type="text" name="'.$key.'" value="'.str_replace('"', '&quot;', $value).'" />';
+                return '<input id="field_'.$key.'" type="text" name="'.$key.'" value="'.str_replace('"', '&quot;', $value).'" />';
                 break;
             case 'save':
                 return $value;
@@ -197,7 +197,7 @@ class                           AdminType {
                 return $value;
                 break;
             case 'edit':
-                $str = '<select name="'.$key.'">';
+                $str = '<select id="field_'.$key.'" name="'.$key.'">';
                 foreach ($params as $k => $v) {
                     if (!ArrayTools::isAssoc($params))
                         $k = $v;
