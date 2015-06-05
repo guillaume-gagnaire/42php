@@ -13,8 +13,8 @@
 	</div>
 	<div class="small-12 medium-6 large-8 columns">
 		<!-- Edit item -->
-		<form method="post" action="" class="profile-item white-bg border">
-			
+		<form method="post" action="" enctype="multipart/form-data" class="profile-item white-bg border">
+			<input type="hidden" name="MAX_FILE_SIZE" value="80000000" />
 			
 			
 			<div class="row">
