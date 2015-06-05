@@ -20,6 +20,10 @@ class                               Db {
         return Db::getInstance()->pdo()->quote($str);
     }
 
+    public static function          lastId() {
+        return Db::getInstance()->pdo()->lastInsertId();
+    }
+
     public static function          get($query) {
         $req = Db::getInstance()->pdo()->query($query);
         return $req->fetch(PDO::FETCH_ASSOC);

@@ -49,7 +49,7 @@ class 				Upload {
 		$uploaded = $u->register($path . $newFilename);
 		if (!$uploaded)
 			return false;
-		return $uploadDir . $newFilename;
+		return self::$uploadDir . $newFilename;
   }
   
   public function 		__construct($field, $isData = false) {

@@ -25,5 +25,16 @@
     "un utilisateur": "un utilisateur",
     "Oui": "Oui",
     "Ajouter": "Ajouter",
-    "Ajouter ": "Ajouter "
+    "Ajouter ": "Ajouter ",
+    "Voir": "Voir",
+    "Laissez vide pour ne pas changer de mot de passe": "Laissez vide pour ne pas changer de mot de passe",
+    "Enregistrer les modifications": "Enregistrer les modifications",
+    "Enregistré !": "Enregistré !",
+    "Non": "Non",
+    "Panneau d'administration": "Panneau d'administration",
+    "Supprimer": "Supprimer",
+    "Êtes-vous sûr de vouloir supprimer cet élément ?": "Êtes-vous sûr de vouloir supprimer cet élément ?",
+    "Annuler": "Annuler",
+    "Les champs suivants doivent être uniques :": "Les champs suivants doivent être uniques :",
+    "Éditer": "Éditer"
 }
