@@ -62,6 +62,7 @@ class                   AdminTable {
             $src .= '<tr><td>'.$item['id'].'</td>';
             foreach ($cols as $colname) {
                 list($type, $params) = $this->getType($colname);
+                $type = "process_$type";
                 $src .= '<td>' . AdminType::$type($colname, isset($item[$colname]) ? $item[$colname] : '', $params, 'preview') . '</td>';
             }
             $src .= '<td class="admin-icons">
