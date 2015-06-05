@@ -43,13 +43,25 @@ class                   AdminTable {
             $limit = intval($this->params['limit']);
 
         $table = $this->params['table'];
-
-        $totalEls = Db::get('SELECT COUNT(id) as nb FROM `'.$table.'`');
+		
+		$restrict = [];
+		if (isset($this->params['restrict']))
+			$restrict = $this->params['restrict'];
+		
+		$where = '';
+		if (sizeof($restrict)) {
+			$where = [];
+			foreach ($restrict as $k => $v)
+				$where[] = '`'.$k.'`='.Db::quote($v);
+			$where = 'WHERE '.implode(' AND ', $where);
+		}
+		
+        $totalEls = Db::get('SELECT COUNT(id) as nb FROM `'.$table.'` '.$where);
         $maxPage = ceil(intval($totalEls['nb']) / $limit);
         if ($page > $maxPage)
             $page = $maxPage;
 
-        $items = Db::query('SELECT * FROM `'.$table.'` ORDER BY id DESC LIMIT '.(($page - 1) * $limit).', '.$limit);
+        $items = Db::query('SELECT * FROM `'.$table.'` '.$where.' ORDER BY id DESC LIMIT '.(($page - 1) * $limit).', '.$limit);
         $cols = explode('|', $this->params['header']);
         $src = '<table>
             <thead>
@@ -85,7 +97,42 @@ class                   AdminTable {
     }
 
     private function    auto_edit($id) {
-
+		$values = [];
+		foreach ($this->params['fields'] as $k => $v) {
+			$values[$k] = isset($v['default']) ? $v['default'] : '';
+		}
+		
+		if ($id) {
+			$data = Db::get('SELECT * FROM `'.$this->params['table'].'` WHERE `id`='.$id);
+			if ($data) {
+				foreach ($values as $k => $v)
+					$values[$k] = $data[$k];
+			}
+		}
+		
+		$editing = $values;
+		foreach ($editing as $k => $v) {
+			if (isset($_POST[$k]))
+				$editing[$k] = $_POST[$k];
+		}
+		
+		$types = [];
+		foreach ($this->params['fields'] as $k => $v) {
+			$types[$k] = $this->getType($k);
+		}
+		
+		$titles = [];
+		foreach ($this->params['fields'] as $k => $v) {
+			$titles[$k] = isset($v['title']) ? $v['title'] : ucfirst($k);
+		}
+		
+		return View::partial('admin/edit', [
+			'id' => $id,
+			'types' => $types,
+			'values' => $values,
+			'editing' => $editing,
+			'titles' => $titles
+		]);
     }
 
     private function    auto_save($id) {
