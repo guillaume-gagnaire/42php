@@ -12,8 +12,25 @@
  *      datetime
  *      bool
  *      select
+ *		hidden
  */
 class                           AdminType {
+    public static function      process_hidden($key, $value, $params, $mode) {
+        switch ($mode) {
+            case 'display':
+                return $value;
+                break;
+            case 'preview':
+                return $value;
+                break;
+            case 'edit':
+                return '<input type="hidden" name="'.$key.'" value="'.str_replace('"', '&quot;', $value).'" />';
+                break;
+            case 'save':
+                return $value;
+                break;
+        }
+    }
     public static function      process_text($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
