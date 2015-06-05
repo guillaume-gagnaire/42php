@@ -106,7 +106,8 @@ class                   AdminController extends Controller {
                     'title' => _t("Langue")
                 ]
             ],
-            'header' => 'photo|email|registered|admin'
+            'header' => 'photo|email|registered|admin',
+            'restrict' => []
         ]);
     }
 
