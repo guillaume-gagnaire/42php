@@ -71,8 +71,8 @@ class                   AdminController extends Controller {
 		        return View::partial('admin/dashboard');
 	        }
         ]);
-        
-        
+
+
         // Users
         $this->methods['users'] = new AdminTable([
             'mode' => 'auto',
@@ -106,8 +106,8 @@ class                   AdminController extends Controller {
                     'title' => _t("Mot de passe")
                 ],
                 'photo' => [
-	                'type' => ['image', '256x256'],
-	                'title' => 'Photo de profil'
+                    'type' => ['image', '256x256'],
+                    'title' => 'Photo de profil'
                 ],
                 'registered' => [
                     'type' => 'datetime',
@@ -144,6 +144,75 @@ class                   AdminController extends Controller {
             ],
             'header' => 'photo|email|admin',
             'restrict' => []
+        ]);
+
+
+        // Blog
+        $this->methods['blog'] = new AdminTable([
+            'mode' => 'auto',
+            'table' => 'Article',
+            'title' => _t('Blog'),
+            'item' => _t('un article'),
+            'icon' => 'fi-rss',
+            'fields' => [
+                'lang' => [
+                    'type' => 'hidden',
+                    'default' => Conf::get('lang'),
+                    'title' => _t("Langue")
+                ],
+                'title' => [
+                    'type' => 'text',
+                    'title' => _t("Titre")
+                ],
+                'intro' => [
+                    'type' => 'html',
+                    'title' => _t("Introduction")
+                ],
+                'content' => [
+                    'type' => 'html',
+                    'title' => _t("Contenu")
+                ],
+                'image' => [
+                    'type' => ['image', '1024x1024'],
+                    'title' => _t("Photo de couverture")
+                ],
+                'keywords' => [
+                    'type' => 'text',
+                    'title' => 'Mots-clés'
+                ],
+                'date' => [
+                    'type' => 'date',
+                    'default' => date('Y-m-d'),
+                    'title' => _t("Date de parution")
+                ],
+                'author' => [
+                    'type' => 'hidden',
+                    'default' => Session::get('user.id'),
+                    'title' => _t("Auteur")
+                ],
+                'slug' => [
+                    'type' => 'text',
+                    'unique' => true,
+                    'title' => _t("Référence"),
+                    'ifEmpty' => function() {
+                        $base = Text::slug($_POST['title']);
+                        $suffix = '';
+                        $res = true;
+                        while ($res) {
+                            $res = Db::getInstance()->Article->findOne([
+                                'slug' => $base . $suffix
+                            ]);
+                            if ($res)
+                                $suffix = $suffix == '' ? 1 : intval($suffix) + 1;
+                        }
+                        return $base . $suffix;
+                    }
+                ]
+            ],
+            'header' => 'image|title|date',
+            'restrict' => [
+                'lang' => Conf::get('lang')
+            ]
         ]);
 
 

@@ -44,6 +44,7 @@
 			<?php foreach ($types as $key => $type) {
 					list($type, $params) = $type;
                     $method = "process_$type";
+                    if ($type != "hidden") {
 					?>
 					
 					<div class="row">
@@ -55,7 +56,7 @@
 						</div>
 					</div>
 					
-				<?php
+				<?php }
 			} ?>
 		</div>
 	</div>

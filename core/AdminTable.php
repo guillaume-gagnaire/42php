@@ -58,6 +58,8 @@ class                   AdminTable {
 		
         $totalEls = Db::get('SELECT COUNT(id) as nb FROM `'.$table.'` '.$where);
         $maxPage = ceil(intval($totalEls['nb']) / $limit);
+        if (!$maxPage)
+            $maxPage = 1;
         if ($page > $maxPage)
             $page = $maxPage;
 
