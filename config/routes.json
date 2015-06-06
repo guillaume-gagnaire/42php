@@ -1,11 +1,4 @@
 {
-    "root": {
-        "controller": "RootController@redirect",
-        "routes": {
-            "fr": "/{path}?",
-            "en": "/{path}?"
-        }
-    },
     "login": {
         "controller": "AuthController@login",
         "routes": {

@@ -142,8 +142,7 @@ class                   AdminController extends Controller {
                     'title' => _t("Langue")
                 ]
             ],
-            'header' => 'photo|email|admin',
-            'restrict' => []
+            'header' => 'photo|email|admin'
         ]);
 
 
@@ -213,6 +212,50 @@ class                   AdminController extends Controller {
             'restrict' => [
                 'lang' => Conf::get('lang')
             ]
+        ]);
+
+
+        // Pages
+        $viewFiles = [];
+        foreach (Dir::read(ROOT.'/views', true, '*.php') as $file) {
+            $file = str_replace('\\', '/', $file);
+            $file = str_replace([str_replace('\\', '/', ROOT).'/views/', '.php'], '', $file);
+            if (!preg_match('#^(admin|system)/#', $file))
+                $viewFiles[] = $file;
+        }
+        $this->methods['pages'] = new AdminTable([
+            'mode' => 'auto',
+            'table' => 'Page',
+            'title' => _t('Pages'),
+            'item' => _t('une page'),
+            'icon' => 'fi-page-filled',
+            'fields' => [
+                'path' => [
+                    'type' => 'text',
+                    'title' => _t("URL")
+                ],
+                'file' => [
+                    'type' => ['select', $viewFiles],
+                    'title' => _t("Fichier de vue")
+                ],
+                'title' => [
+                    'type' => 'text',
+                    'title' => _t("Titre")
+                ],
+                'description' => [
+                    'type' => 'text',
+                    'title' => _t("Description")
+                ],
+                'keywords' => [
+                    'type' => 'text',
+                    'title' => _t("Mots-clés")
+                ],
+                'image' => [
+                    'type' => 'text',
+                    'title' => _t("Image de partage")
+                ],
+            ],
+            'header' => 'path|file'
         ]);
 
 

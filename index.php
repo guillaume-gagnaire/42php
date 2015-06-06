@@ -13,7 +13,10 @@ if (isset($route['route']))
 include ROOT.'/scripts/i18n.php';
 
 if (!$route) {
-    Http::throw404(false);
+    $route = [
+        'controller' => 'RootController@redirect',
+        'params' => ''
+    ];
 }
 
 Stats::log();

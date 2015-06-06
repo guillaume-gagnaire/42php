@@ -12,11 +12,11 @@ class View {
             return '';
         extract($params);
         ob_start();
-        if ($header && file_exists(ROOT.'/views/htmlheader.php'))
-            include ROOT.'/views/htmlheader.php';
+        if ($header && file_exists(ROOT.'/views/system/htmlheader.php'))
+            include ROOT . '/views/system/htmlheader.php';
         include ROOT.'/views/'.$viewFile.'.php';
-        if ($header && file_exists(ROOT.'/views/htmlfooter.php'))
-            include ROOT.'/views/htmlfooter.php';
+        if ($header && file_exists(ROOT.'/views/system/htmlfooter.php'))
+            include ROOT . '/views/system/htmlfooter.php';
         $output = ob_get_contents();
         ob_end_clean();
         return $output;
