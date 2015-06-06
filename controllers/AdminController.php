@@ -22,6 +22,15 @@ class                   AdminController extends Controller {
         Conf::set('page.js', []);
         Conf::set('page.css', []);
         Conf::append('page.js', '/lib/admin/menu.js');
+        Conf::append('page.js', '/lib/redactor/redactor.js');
+        Conf::append('page.js', '/lib/redactor/fontsize.js');
+        Conf::append('page.js', '/lib/redactor/fullscreen.js');
+        Conf::append('page.js', '/lib/redactor/imagemanager.js');
+        Conf::append('page.js', '/lib/redactor/table.js');
+        Conf::append('page.js', '/lib/redactor/textdirection.js');
+        Conf::append('page.js', '/lib/redactor/video.js');
+        Conf::append('page.js', '/lib/redactor/lang/'.Conf::get('lang').'.js');
+        Conf::append('page.css', '/lib/redactor/redactor.css');
         Conf::append('page.css', 'https://fonts.googleapis.com/css?family=Roboto:400,300');
         Conf::append('page.css', '/lib/foundation-icons/foundation-icons.css');
         Conf::append('page.css', '/lib/admin/style.css');
@@ -30,9 +39,10 @@ class                   AdminController extends Controller {
 	private function 	getNav() {
 		$str = '';
 		foreach ($this->methods as $k => $v) {
-			$str .= '<li'.($this->viewParams['selectedItem'] == $k ? ' class="active"' : '').'>
-				<a href="'.Argv::createUrl('admin').'?module='.$k.'">'.(isset($v->params['icon']) ? '<i class="'.$v->params['icon'].'"></i>' : '').(isset($v->params['title']) ? $v->params['title'] : ucfirst($k)).'</a>
-			</li>';
+            if (!isset($v->params['hidden']) || !$v->params['hidden'])
+                $str .= '<li'.($this->viewParams['selectedItem'] == $k ? ' class="active"' : '').'>
+                    <a href="'.Argv::createUrl('admin').'?module='.$k.'">'.(isset($v->params['icon']) ? '<i class="'.$v->params['icon'].'"></i>' : '').(isset($v->params['title']) ? $v->params['title'] : ucfirst($k)).'</a>
+                </li>';
 		}
 		return $str;
 	}
@@ -86,7 +96,7 @@ class                   AdminController extends Controller {
 	                'title' => 'Photo de profil'
                 ],
                 'registered' => [
-                    'type' => 'datetime',
+                    'type' => 'hidden',
                     'default' => date('Y-m-d H:i:s'),
                     'title' => _t("Date d'inscription")
                 ],
@@ -118,8 +128,26 @@ class                   AdminController extends Controller {
                     'title' => _t("Langue")
                 ]
             ],
-            'header' => 'photo|email|registered|admin',
+            'header' => 'photo|email|admin',
             'restrict' => []
+        ]);
+
+
+
+
+        // WYSIWYG Image Upload
+        $this->methods['wysiwygImageUpload'] = new AdminTable([
+            'mode' => 'standalone',
+            'hidden' => true,
+            'title' => '',
+            'handler' => function() {
+                $value = Upload::job('file', false, ['jpg', 'jpeg', 'png', 'gif', 'pjpeg']);
+                $ret = [
+                    'filelink' => !$value ? false : $value
+                ];
+                echo stripslashes(json_encode($ret));
+                die();
+            }
         ]);
     }
 

@@ -18,5 +18,8 @@
                 ga('send', 'pageview');
             </script>
         <?php } ?>
+        <?php foreach (Conf::get('page.bottom', []) as $script) { ?>
+            <?=$script ?>
+        <?php } ?>
     </body>
 </html>

@@ -43,8 +43,7 @@
 		<div class="admin-item-preview profile-item white-bg border">
 			<?php foreach ($types as $key => $type) {
 					list($type, $params) = $type;
-					if ($type != 'hidden') { 
-						$method = "process_$type";
+                    $method = "process_$type";
 					?>
 					
 					<div class="row">
@@ -56,7 +55,7 @@
 						</div>
 					</div>
 					
-				<?php }
+				<?php
 			} ?>
 		</div>
 	</div>
@@ -68,6 +67,9 @@
 			<?php foreach ($types as $key => $type) {
 					list($type, $params) = $type;
 					$method = "process_$type";
+                    if ($type == 'hidden') {
+                        echo AdminType::$method($key, $editing[$key], $params, 'edit');
+                    } else {
 					?>
 					<div class="row">
 						<div class="small-12 medium-4 large-3 column text-right small-only-text-left">
@@ -77,7 +79,7 @@
 							<?=AdminType::$method($key, $editing[$key], $params, 'edit') ?>
 						</div>
 					</div>
-			<?php } ?>
+			<?php } } ?>
 			
 			<div class="row">
 				<div class="small-12 column text-center">

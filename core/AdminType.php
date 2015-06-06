@@ -4,6 +4,7 @@
  * Class AdminType
  * List of types:
  *      text
+ *      html
  *      password
  *      image
  *      file
@@ -31,6 +32,7 @@ class                           AdminType {
                 break;
         }
     }
+
     public static function      process_text($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
@@ -41,6 +43,35 @@ class                           AdminType {
                 break;
             case 'edit':
                 return '<input id="field_'.$key.'" type="text" name="'.$key.'" value="'.str_replace('"', '&quot;', $value).'" />';
+                break;
+            case 'save':
+                return $value;
+                break;
+        }
+    }
+
+
+    public static function      process_html($key, $value, $params, $mode) {
+        switch ($mode) {
+            case 'display':
+                return $value;
+                break;
+            case 'preview':
+                return $value;
+                break;
+            case 'edit':
+                Conf::append('page.bottom', '<script type="text/javascript">
+                    $(function(){
+                        $("#field_'.$key.'").redactor({
+                            imageUpload: "'.Argv::createUrl('admin').'?module=wysiwygImageUpload",
+                            plugins: ["table", "fontsize", "fullscreen", "video"],
+                            minHeight: 300,
+                            maxHeight: 800,
+                            lang: "'.Conf::get('lang').'"
+                        });
+                    });
+                </script>');
+                return '<textarea id="field_'.$key.'" name="'.$key.'" style="height: 350px;">'.$value.'</textarea>';
                 break;
             case 'save':
                 return $value;
