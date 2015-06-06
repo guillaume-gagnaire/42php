@@ -22,6 +22,8 @@ class                   AdminController extends Controller {
         Conf::set('page.js', []);
         Conf::set('page.css', []);
         Conf::append('page.js', '/lib/admin/menu.js');
+
+        // Redactor
         Conf::append('page.js', '/lib/redactor/redactor.js');
         Conf::append('page.js', '/lib/redactor/fontsize.js');
         Conf::append('page.js', '/lib/redactor/fullscreen.js');
@@ -31,6 +33,18 @@ class                   AdminController extends Controller {
         Conf::append('page.js', '/lib/redactor/video.js');
         Conf::append('page.js', '/lib/redactor/lang/'.Conf::get('lang').'.js');
         Conf::append('page.css', '/lib/redactor/redactor.css');
+
+        // Pickadate
+        Conf::append('page.js', '/lib/pickadate/picker.js');
+        Conf::append('page.js', '/lib/pickadate/picker.date.js');
+        Conf::append('page.js', '/lib/pickadate/picker.time.js');
+        if (Conf::get('lang') != 'en')
+            Conf::append('page.js', '/lib/pickadate/translations/'.Conf::get('lang').'_'.strtoupper(Conf::get('lang')).'.js');
+        Conf::append('page.css', '/lib/pickadate/themes/default.css');
+        Conf::append('page.css', '/lib/pickadate/themes/default.date.css');
+        Conf::append('page.css', '/lib/pickadate/themes/default.time.css');
+
+
         Conf::append('page.css', 'https://fonts.googleapis.com/css?family=Roboto:400,300');
         Conf::append('page.css', '/lib/foundation-icons/foundation-icons.css');
         Conf::append('page.css', '/lib/admin/style.css');
@@ -96,7 +110,7 @@ class                   AdminController extends Controller {
 	                'title' => 'Photo de profil'
                 ],
                 'registered' => [
-                    'type' => 'hidden',
+                    'type' => 'datetime',
                     'default' => date('Y-m-d H:i:s'),
                     'title' => _t("Date d'inscription")
                 ],

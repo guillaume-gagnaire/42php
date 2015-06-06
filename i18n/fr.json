@@ -36,5 +36,10 @@
     "Êtes-vous sûr de vouloir supprimer cet élément ?": "Êtes-vous sûr de vouloir supprimer cet élément ?",
     "Annuler": "Annuler",
     "Les champs suivants doivent être uniques :": "Les champs suivants doivent être uniques :",
-    "Éditer": "Éditer"
+    "Éditer": "Éditer",
+    "dd\/mm\/yyyy": "dd\/mm\/yyyy",
+    "HH!hi": "HH!hi",
+    "d\/m\/Y": "d\/m\/Y",
+    "H\\hi": "H\\hi",
+    "d\/m\/Y à H:i:s": "d\/m\/Y à H:i:s"
 }

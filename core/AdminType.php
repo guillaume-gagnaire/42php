@@ -5,6 +5,9 @@
  * List of types:
  *      text
  *      html
+ *      int
+ *      float
+ *      price
  *      password
  *      image
  *      file
@@ -33,6 +36,57 @@ class                           AdminType {
         }
     }
 
+    public static function      process_int($key, $value, $params, $mode) {
+        switch ($mode) {
+            case 'display':
+                return $value;
+                break;
+            case 'preview':
+                return $value;
+                break;
+            case 'edit':
+                return '<input id="field_'.$key.'" type="text" name="'.$key.'" value="'.str_replace('"', '&quot;', $value).'" />';
+                break;
+            case 'save':
+                return intval($value);
+                break;
+        }
+    }
+
+    public static function      process_float($key, $value, $params, $mode) {
+        switch ($mode) {
+            case 'display':
+                return $value;
+                break;
+            case 'preview':
+                return $value;
+                break;
+            case 'edit':
+                return '<input id="field_'.$key.'" type="text" name="'.$key.'" value="'.str_replace('"', '&quot;', $value).'" />';
+                break;
+            case 'save':
+                return floatval(str_replace([',', ' '], ['.', ''], $value));
+                break;
+        }
+    }
+
+    public static function      process_price($key, $value, $params, $mode) {
+        switch ($mode) {
+            case 'display':
+                return number_format(floatval($value), 2, ',', ' ');
+                break;
+            case 'preview':
+                return number_format(floatval($value), 2, ',', ' ');
+                break;
+            case 'edit':
+                return '<input id="field_'.$key.'" type="text" name="'.$key.'" value="'.str_replace('"', '&quot;', $value).'" />';
+                break;
+            case 'save':
+                return floatval(str_replace([',', ' '], ['.', ''], $value));
+                break;
+        }
+    }
+
     public static function      process_text($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
@@ -49,7 +103,6 @@ class                           AdminType {
                 break;
         }
     }
-
 
     public static function      process_html($key, $value, $params, $mode) {
         switch ($mode) {
@@ -71,7 +124,7 @@ class                           AdminType {
                         });
                     });
                 </script>');
-                return '<textarea id="field_'.$key.'" name="'.$key.'" style="height: 350px;">'.$value.'</textarea>';
+                return '<textarea id="field_'.$key.'" name="'.$key.'" style="height: 350px;" class="text-left">'.$value.'</textarea>';
                 break;
             case 'save':
                 return $value;
@@ -188,16 +241,24 @@ class                           AdminType {
     public static function      process_date($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
-                return $value;
+                return date(_t("d/m/Y"), strtotime($value));
                 break;
             case 'preview':
-                return $value;
+                return date(_t("d/m/Y"), strtotime($value));
                 break;
             case 'edit':
-                return '<input id="field_'.$key.'" type="text" name="'.$key.'" value="'.str_replace('"', '&quot;', $value).'" />';
+                Conf::append('page.bottom', '<script type="text/javascript">
+                    $(function(){
+                        $("#field_'.$key.'").pickadate({
+                            format: "'._t("dd/mm/yyyy").'",
+                            formatSubmit: "yyyy-mm-dd"
+                        });
+                    });
+                </script>');
+                return '<input id="field_'.$key.'" type="text" name="'.$key.'" value="'.str_replace('"', '&quot;', date(_t("d/m/Y"), strtotime($value))).'" />';
                 break;
             case 'save':
-                return $value;
+                return $_POST[$key.'_submit'];
                 break;
         }
     }
@@ -205,15 +266,35 @@ class                           AdminType {
     public static function      process_datetime($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
-                return $value;
+                return date(_t("d/m/Y à H:i:s"), strtotime($value));
                 break;
             case 'preview':
-                return $value;
+                return date(_t("d/m/Y à H:i:s"), strtotime($value));
                 break;
             case 'edit':
-                return '<input id="field_'.$key.'" type="text" name="'.$key.'" value="'.str_replace('"', '&quot;', $value).'" />';
+                Conf::append('page.bottom', '<script type="text/javascript">
+                    $(function(){
+                        $("#field_'.$key.'").pickadate({
+                            format: "'._t("dd/mm/yyyy").'",
+                            formatSubmit: "yyyy-mm-dd"
+                        });
+                        $("#field_'.$key.'__time").pickatime({
+                            format: "'._t("HH!hi").'",
+                            formatSubmit: "HH:i:00"
+                        });
+                    });
+                </script>');
+                return '<div class="row">
+                            <div class="small-7 medium-8 large-9 column">
+                                <input id="field_'.$key.'" type="text" name="'.$key.'" value="'.str_replace('"', '&quot;', date(_t("d/m/Y"), strtotime($value))).'" />
+                            </div>
+                            <div class="small-5 medium-4 large-3 column">
+                                <input id="field_'.$key.'__time" type="text" name="'.$key.'__time" value="'.str_replace('"', '&quot;', date(_t("H\hi"), strtotime($value))).'" />
+                            </div>
+                        </div>';
                 break;
             case 'save':
+                $value = $_POST[$key.'_submit'] . ' ' . $_POST[$key.'__time_submit'];
                 return $value;
                 break;
         }
