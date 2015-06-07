@@ -48,6 +48,7 @@ class                       BlogController extends Controller {
 
     public function         category($categoryid) {
         $cat = false;
+        $category = false;
         if ($categoryid !== false) {
             $category = Category::findOne([
                 'slug' => $categoryid
@@ -75,7 +76,8 @@ class                       BlogController extends Controller {
         return View::render('blog/category', [
             'page' => $page,
             'maxpage' => $maxpage,
-            'posts' => $posts
+            'posts' => $posts,
+            'category' => $category
         ]);
     }
 }

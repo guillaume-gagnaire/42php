@@ -182,7 +182,7 @@ class                   AdminController extends Controller {
                     'title' => _t("Contenu")
                 ],
                 'image' => [
-                    'type' => ['image', '1024x1024'],
+                    'type' => ['image', '2048x2048'],
                     'title' => _t("Photo de couverture")
                 ],
                 'keywords' => [

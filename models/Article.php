@@ -53,7 +53,7 @@ class                           Article extends Model {
 
     public function             getUrl() {
         $category = new Category($this->category);
-        return Argv::createUrl('blog', [
+        return Argv::createUrl('blogArticle', [
             'p1' => $category->slug,
             'p2' => $this->slug
         ]);
