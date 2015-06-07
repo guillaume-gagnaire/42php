@@ -1,4 +1,11 @@
 {
+    "i18n": {
+        "languages": [
+            "fr",
+            "en"
+        ],
+        "default": "fr"
+    },
     "cookie": {
         "domain": ""
     },

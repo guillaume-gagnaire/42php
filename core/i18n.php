@@ -6,12 +6,9 @@ function _t($key, $params = []) {
 
 class 							i18n {
 	public static 				$__translations = [];
-	private static 				$__defaultLanguage = 'fr';
+	private static 				$__defaultLanguage = '';
 	private static 				$__sessionKey = '__Lang';
-	public static 				$__acceptedLanguages = [
-		'fr',
-		'en'
-	];
+	public static 				$__acceptedLanguages = [];
 	
 	public static function 		load() {
 		if (!file_exists(ROOT.'/i18n/'.Conf::get('lang').'.json'))
@@ -31,6 +28,9 @@ class 							i18n {
 	}
 	
 	public static function 		init() {
+        self::$__acceptedLanguages = Conf::get('i18n.languages');
+        self::$__defaultLanguage = Conf::get('i18n.default');
+
 		if (Auth::uid()) {
 			Conf::set('lang', (isset(Auth::user()['lang']) && in_array(Auth::user()['lang'], self::$__acceptedLanguages)) ? Auth::user()['lang'] : self::$__defaultLanguage);
 		} else {
