@@ -322,11 +322,22 @@ For security reasons, the DB configuration is in the `/config/db.php` file.
 
 You can, at the runtime, access or modify the configuration with a set of methods :
 
+`/config/global.json`
+```json
+{
+    "pdo": {
+        "dsn": "mysql:host=localhost;dbname=mydb"
+    }
+}
+```
+
+`test.php`
 ```php
 <?php
 
 // Get the pdo.dsn value. If this value isn't in the configuration data, Conf::get returns the second parameter as a default value
 echo "The PDO DSN is : " . Conf::get('pdo.dsn', 'mysql:host=locahost;dbname=cms');
+// Prints : The PDO DSN is : mysql:host=localhost;dbname=mydb
 
 // Set a value
 Conf::set('foo.bar', []);
