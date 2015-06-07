@@ -31,7 +31,10 @@ class                           Article extends Model {
 
     public static function      getMaxPage($limit = 10, $category = false) {
         $ret = Db::get('SELECT COUNT(`id`) as `nb` FROM `Article` WHERE `enabled`=1 '.($category !== false ? 'AND `category`='.Db::quote($category) : ''));
-        return ceil(intval($ret['nb']) / $limit);
+        $ret = ceil(intval($ret['nb']) / $limit);
+        if ($ret < 1)
+            return 1;
+        return $ret;
     }
 
     public static function      getPosts($page = 1, $limit = 10, $category = false) {
@@ -40,6 +43,20 @@ class                           Article extends Model {
         foreach ($posts as $post)
             $ret[] = new Article($post['id'], $post);
         return $ret;
+    }
+
+    public function             getCategory() {
+        if (!$this->category)
+            return false;
+        return new Category($this->category);
+    }
+
+    public function             getUrl() {
+        $category = new Category($this->category);
+        return Argv::createUrl('blog', [
+            'p1' => $category->slug,
+            'p2' => $this->slug
+        ]);
     }
 }
 

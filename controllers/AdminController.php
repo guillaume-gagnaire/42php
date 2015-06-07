@@ -147,21 +147,31 @@ class                   AdminController extends Controller {
 
 
         // Blog
-        $this->methods['blog'] = new AdminTable([
+        $categories = Db::query('SELECT id, title FROM Category WHERE lang='.Db::quote(Conf::get('lang')).' ORDER BY title');
+        $cats = [];
+        foreach ($categories as $category)
+            $cats[$category['id']] = $category['title'];
+        if (!sizeof($cats)) {
+            $c = new Category();
+            $c->lang = Conf::get('lang');
+            $c->title = _t("Par défaut");
+            $c->save();
+            $cats[$c->id] = $c->title;
+        }
+        $this->methods['articles'] = new AdminTable([
             'mode' => 'auto',
             'table' => 'Article',
-            'title' => _t('Blog'),
+            'title' => _t('Articles'),
             'item' => _t('un article'),
             'icon' => 'fi-rss',
             'fields' => [
-                'lang' => [
-                    'type' => 'hidden',
-                    'default' => Conf::get('lang'),
-                    'title' => _t("Langue")
-                ],
                 'title' => [
                     'type' => 'text',
                     'title' => _t("Titre")
+                ],
+                'category' => [
+                    'type' => ['select', $cats],
+                    'title' => _t("Catégorie")
                 ],
                 'intro' => [
                     'type' => 'html',
@@ -177,7 +187,7 @@ class                   AdminController extends Controller {
                 ],
                 'keywords' => [
                     'type' => 'text',
-                    'title' => 'Mots-clés'
+                    'title' => _t('Mots-clés')
                 ],
                 'date' => [
                     'type' => 'date',
@@ -206,9 +216,68 @@ class                   AdminController extends Controller {
                         }
                         return $base . $suffix;
                     }
+                ],
+                'lang' => [
+                    'type' => 'hidden',
+                    'default' => Conf::get('lang'),
+                    'title' => _t("Langue")
+                ],
+                'enabled' => [
+                    'type' => 'bool',
+                    'default' => true,
+                    'title' => _t("Publié")
                 ]
             ],
-            'header' => 'image|title|date',
+            'header' => 'image|title|date|enabled',
+            'restrict' => [
+                'lang' => Conf::get('lang')
+            ]
+        ]);
+
+        $this->methods['categories'] = new AdminTable([
+            'mode' => 'auto',
+            'table' => 'Category',
+            'title' => _t('Catégories'),
+            'item' => _t('une catégorie'),
+            'icon' => 'fi-folder',
+            'fields' => [
+                'lang' => [
+                    'type' => 'hidden',
+                    'default' => Conf::get('lang'),
+                    'title' => _t("Langue")
+                ],
+                'title' => [
+                    'type' => 'text',
+                    'title' => _t("Titre")
+                ],
+                'description' => [
+                    'type' => 'text',
+                    'title' => _t("Description")
+                ],
+                'keywords' => [
+                    'type' => 'text',
+                    'title' => _t("Mots-clés")
+                ],
+                'slug' => [
+                    'type' => 'text',
+                    'unique' => true,
+                    'title' => _t("Référence"),
+                    'ifEmpty' => function() {
+                        $base = Text::slug($_POST['title']);
+                        $suffix = '';
+                        $res = true;
+                        while ($res) {
+                            $res = Db::getInstance()->Article->findOne([
+                                'slug' => $base . $suffix
+                            ]);
+                            if ($res)
+                                $suffix = $suffix == '' ? 1 : intval($suffix) + 1;
+                        }
+                        return $base . $suffix;
+                    }
+                ]
+            ],
+            'header' => 'title',
             'restrict' => [
                 'lang' => Conf::get('lang')
             ]

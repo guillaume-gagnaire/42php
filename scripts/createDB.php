@@ -57,6 +57,15 @@ $queries = [
                         `enabled` tinyint(1),
                         PRIMARY KEY (`id`)
                     ) DEFAULT CHARSET=utf8',
+    'Category' => 	'CREATE TABLE IF NOT EXISTS `Category` (
+                        `id` int(11) NOT NULL AUTO_INCREMENT,
+                        `lang` text,
+                        `title` text,
+                        `description` text,
+                        `keywords` text,
+                        `slug` text,
+                        PRIMARY KEY (`id`)
+                    ) DEFAULT CHARSET=utf8',
     'Stats' => 	'CREATE TABLE IF NOT EXISTS `Stats` (
                     `id` int(11) NOT NULL AUTO_INCREMENT,
                     `user_id` int,

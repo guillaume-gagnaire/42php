@@ -226,10 +226,10 @@ class                           AdminType {
     public static function      process_bool($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
-                return intval($value) == 1 ? _t("Oui") : _t("Non");
+                return intval($value) == 1 ? '<span style="color: #43AC6A">'._t("Oui").'</span>' : '<span style="color: #F04124">'._t("Non").'</span>';
                 break;
             case 'preview':
-                return intval($value) == 1 ? _t("Oui") : _t("Non");
+                return intval($value) == 1 ? '<span style="color: #43AC6A">'._t("Oui").'</span>' : '<span style="color: #F04124">'._t("Non").'</span>';
                 break;
             case 'edit':
                 return '<input id="field_'.$key.'" type="checkbox" name="'.$key.'" value="1"'.(intval($value) == 1 ? ' checked="checked"' : '').' style="margin-top: 14px" />';
@@ -305,9 +305,13 @@ class                           AdminType {
     public static function      process_select($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
+                if (ArrayTools::isAssoc($params))
+                    return isset($params[$value]) ? $params[$value] : '';
                 return $value;
                 break;
             case 'preview':
+                if (ArrayTools::isAssoc($params))
+                    return isset($params[$value]) ? $params[$value] : '';
                 return $value;
                 break;
             case 'edit':

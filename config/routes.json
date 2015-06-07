@@ -29,9 +29,23 @@
     },
     "admin": {
         "controller": "AdminController@index",
-        "routes":  {
+        "routes": {
             "fr": "/admin",
             "en": "/admin"
+        }
+    },
+    "blogArticle": {
+        "controller": "BlogController@process",
+        "routes": {
+            "fr": "/blog/{p1}/{p2}",
+            "en": "/blog/{p1}/{p2}"
+        }
+    },
+    "blogCategory": {
+        "controller": "BlogController@processCategory",
+        "routes": {
+            "fr": "/blog/{p1}?",
+            "en": "/blog/{p1}?"
         }
     }
 }
