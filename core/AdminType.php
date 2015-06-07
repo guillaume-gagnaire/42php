@@ -184,7 +184,7 @@ class                           AdminType {
                 return '<img src="'.$value.'" style="max-height: 32px; max-width: 32px;" alt="" />';
                 break;
             case 'edit':
-                return '<input id="field_'.$key.'" type="file" name="'.$key.'" style="margin-top: 9px" />';
+                return '<input id="field_'.$key.'" type="file" name="'.$key.'" style="margin-top: 9px" accept="image/*" />';
                 break;
             case 'save':
                 $value = Upload::job($key, false, ['jpg', 'jpeg', 'png', 'gif']);
