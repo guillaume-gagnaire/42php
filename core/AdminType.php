@@ -166,6 +166,8 @@ class                           AdminType {
                 return '<input id="field_'.$key.'" type="email" name="'.$key.'" value="'.str_replace('"', '&quot;', $value).'" />';
                 break;
             case 'save':
+                if (!filter_var($value, FILTER_VALIDATE_EMAIL))
+                    return null;
                 return $value;
                 break;
         }
