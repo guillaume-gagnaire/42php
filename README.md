@@ -38,9 +38,11 @@ There is a route for each language implemented on the website. If you don't set
 the route for a specific language, this page will never be reachable in this
 language.
 
-You can specify parameters by setting a special tag between braces: `{paramName}`. If you want the last param to be optional, add an interrogation mark at the end: `{optionalParam}?`.
+You can specify parameters by setting a special tag between braces: `{paramName}`.
+If you want the last param to be optional, add an interrogation mark at the end: `{optionalParam}?`.
 
-If you want to match an infinite number of parameters behind your route, just add a star (`*`) at the end: `/api/v1/*`.
+If you want to match an infinite number of parameters behind your route, just 
+add a star (`*`) at the end: `/api/v1/*`.
 
 The name of the route object is useful to generate an url into the current language :
 
@@ -50,6 +52,74 @@ The name of the route object is useful to generate an url into the current langu
 $url = Argv::createUrl('login', [
     'mandatory-param' => 'aValue',
     'optional-param' => ''
+]);
+
+?>
+```
+
+Database
+--------
+
+The database connection is managed by PDO, and accessible via `Db` object. You
+can write your own SQL queries, or use the MongoDB like syntax :
+
+```php
+<?php
+
+// Get a single item
+// SQL
+$user = Db::get('SELECT id, email FROM User WHERE id=' . Db::quote($_GET['id']));
+// MongoDB like
+$user = Db::getInstance()->User->findOne(['id' => $_GET['id']], ['id', 'email']);
+echo $user->id . ': ' . $user->email;
+
+
+// Get a list of items
+// SQL
+$users = Db::query('SELECT id, email FROM User WHERE enabled = 1 AND (id IN (1, 2, 3) OR id = 42) ORDER BY id DESC, email ASC LIMIT 1, 10');
+// MongoDB like
+$users = Db::getInstance()->User->find([
+    'enabled' => 1,
+    'id' => [
+        '$or' => [
+            '$in' => [1, 2, 3],
+            '$eq' => 42
+        ]
+    ]
+], ['id', 'email'], ['id' => -1, 'email' => 1], '1, 10');
+foreach ($users as $user)
+    echo $user->id . ': ' . $user->email . '<br />';
+
+
+// Update
+// SQL
+Db::exec('UPDATE User SET enabled = 0 WHERE id = 10');
+// MongoDB like
+Db::getInstance()->User->update(['id' => 10], ['enabled' => 0]);
+
+
+// Delete
+// SQL
+Db::exec('DELETE FROM User WHERE id = 42');
+// MongoDB like
+Db::getInstance()->User->remove(['id' => 42]);
+
+
+// Insert
+// SQL
+Db::exec('INSERT INTO User (email, enabled) VALUES ("test@test.com", 1)');
+$id = Db::lastId();
+// MongoDB like
+$id = Db::getInstance()->User->insert([
+    'email' => 'test@test.com',
+    'enabled' => 1
+]);
+
+
+// Save : only for MongoDB Like : if id field is in data, updates, or insert
+$id = Db::getInstance()->User->save([
+    'email' => 'test@test.com',
+    'enabled' => 1
 ]);
 
 ?>
@@ -80,6 +150,104 @@ echo Controller::run('TestController@foo', [
 
 Your methods can accept a single parameter, which is an object of all the 
 parameters found in the route, or manually passed to `Controller::run`.
+
+Models
+------
+The models in **42php** aren't the MVC models, but more auto-managed objects. 
+It represents a single item of the database.
+
+```php
+<?php
+
+class                           User extends Model {
+    public                      $email;
+    public                      $password;
+    public                      $firstname;
+    public                      $lastname;
+    public                      $genre;
+    public                      $registered;
+    public                      $admin = false;
+    public                      $slug;
+    public                      $lang;
+    public                      $photo;
+    
+    /*
+    ** This method is automatically called before saving the object
+    */
+    public function             beforeSave() {
+        if ($this->slug == '') {
+            $base = Text::slug($this->firstname).'-'.Text::slug($this->lastname);
+            $suffix = '';
+            $res = true;
+            while ($res) {
+                $res = Db::getInstance()->User->findOne([
+                    'slug' => $base . $suffix
+                ]);
+                if ($res)
+                    $suffix = $suffix == '' ? 1 : intval($suffix) + 1;
+            }
+            $this->slug = $base . $suffix;
+        }
+    }
+
+    public function             setPassword($newPassword) {
+        $this->password = Hash::blowfish($newPassword);
+        return $this;
+    }
+
+    public function             testPassword($password) {
+        return Hash::same($password, $this->password);
+    }
+    
+    /*
+    ** Override of the Model::toJson method, returning data to export to API
+    */
+    public function             toJson($forSession = false) {
+        $d = parent::toJson();
+        unset($d['password']);
+        if (!$forSession)
+            unset($d['admin']);
+        return $d;
+    }
+}
+
+// Usage
+$user = new User(); // New user
+$user = new User(42); // Load the user id n°42
+
+$user->email = 'test@test.com';
+$user->setPassword('MyNewPassword');
+
+$user->save();
+$newUser = $user->duplicate();
+
+$newUser->admin = true;
+$newUser->save();
+echo 'The new user ID is ' . $newUser->id;
+
+$user->delete();
+
+// Find all users who are not admin, to change the passwords
+$users = User::find([
+    'admin' => false
+]);
+foreach ($users as $user) {
+    $user->setPassword( Text::random(8) );
+    $user->save();
+}
+
+// Find one user
+$user = User::findOne([
+    'lastname' => 'Doe'
+]);
+if (!$user)
+    echo "No user";
+else
+    var_dump($user->toJson());
+
+?>
+```
+
 
 Views
 -----
