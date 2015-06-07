@@ -307,3 +307,23 @@ datetime | A datetime input. Directly implements date and time picker. | -
 bool | A checkbox, sets `1` or `0` in database. | -
 select | A select input. | The parameter is an array with values. If non-associative, the option value field is filled with the same string as the displayed value.
 hidden | A hidden input, used with `default` field to fill it. | -
+
+
+### Add a custom panel
+
+You can also create a custom panel, handled by an anonymous function :
+
+```php
+<?php
+
+$this->methods['dashboard'] = new AdminTable([
+    'mode' => 'standalone',
+    'title' => _t('Tableau de bord'),
+    'icon' => 'fi-home',
+    'handler' => function() {
+        return View::partial('admin/dashboard');
+    }
+]);
+
+?>
+```
