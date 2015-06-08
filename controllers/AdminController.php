@@ -21,7 +21,6 @@ class                   AdminController extends Controller {
 		];
         Conf::set('page.js', []);
         Conf::set('page.css', []);
-        Conf::append('page.js', '/lib/admin/menu.js');
 
         // Redactor
         Conf::append('page.js', '/lib/redactor/redactor.js');
@@ -48,6 +47,10 @@ class                   AdminController extends Controller {
         Conf::append('page.css', 'https://fonts.googleapis.com/css?family=Roboto:400,300');
         Conf::append('page.css', '/lib/foundation-icons/foundation-icons.css');
         Conf::append('page.css', '/lib/admin/style.css');
+
+
+        Conf::append('page.js', '/lib/swipe/swipe.js');
+        Conf::append('page.js', '/lib/admin/menu.js');
 	}
 	
 	private function 	getNav() {

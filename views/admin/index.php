@@ -1,11 +1,10 @@
-<div class="row full-width wrapper">
+<div class="row full-width wrapper hide-for-medium-down">
     <div class="large-12 columns content-bg">
         <div id="top-menu">
             <div class="row">
                 <div class="large-2 medium-4 small-12 columns top-part-no-padding">
                     <div class="logo-bg">
                         <span class="admin-title"><?= _t("Administration") ?></span>
-                        <i class="fi-list toggles" data-toggle="hide"></i>
                     </div>
                 </div>
                 <div class="large-10 medium-8 small-12 columns top-menu">
@@ -49,5 +48,34 @@
                <?= $content ?>
             </div>
         </div>
+    </div>
+</div>
+
+
+
+<!-- mobile view -->
+<div class="off-canvas-wrap show-for-medium-down" style="-webkit-user-select: none; -moz-user-select: none; user-select: none;" data-offcanvas>
+    <div class="inner-wrap" style="min-height: 100vh">
+
+        <nav class="tab-bar">
+            <div class="left-small">
+                <a href="#idOfLeftMenu" role="button" aria-controls="idOfLeftMenu" aria-expanded="false" class="left-off-canvas-toggle menu-icon" ><span></span></a>
+            </div>
+            <h1 style="text-align: center; color: #fff"><?= _t("Administration") ?></h1>
+        </nav>
+
+        <aside class="left-off-canvas-menu">
+            <ul class="off-canvas-list">
+                <?= $nav ?>
+            </ul>
+        </aside>
+
+        <div class="row">
+            <div class="small-12 column">
+                <?= $content ?>
+            </div>
+        </div>
+        <a class="exit-off-canvas"></a>
+
     </div>
 </div>

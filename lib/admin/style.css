@@ -756,7 +756,7 @@ input[type="text"] {
     padding: 0 15px;
 }
 
-.side-nav i {
+.side-nav i, ul.off-canvas-list li a i {
     font-size: 28px;
     margin: 0 15px 0 0;
     vertical-align: middle;
