@@ -61,6 +61,16 @@
 
 
             <h1><?= $article->title ?></h1>
+            <div class="labels">
+	            <?php
+		            $keywords = explode(',', $article);
+		            foreach ($keywords as $keyword) {
+			        	$keyword = trim($keyword);
+			        	if (strlen($keyword))
+			        		echo '<span class="round label blog_label">'.$keyword.'</span>';
+		            }
+		        ?>
+            </div>
             <div class="post_intro">
                 <?= $article->intro ?>
             </div>
