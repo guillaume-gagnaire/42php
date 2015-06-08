@@ -61,13 +61,13 @@
 
 
             <h1><?= $article->title ?></h1>
-            <div class="labels">
+            <div class="labels" style="margin: 0 0 20px 0;">
 	            <?php
-		            $keywords = explode(',', $article);
+		            $keywords = explode(',', $article->keywords);
 		            foreach ($keywords as $keyword) {
 			        	$keyword = trim($keyword);
 			        	if (strlen($keyword))
-			        		echo '<span class="round label blog_label">'.$keyword.'</span>';
+			        		echo '<span class="round label blog_label" style="margin-right: 10px;">'.$keyword.'</span>';
 		            }
 		        ?>
             </div>
