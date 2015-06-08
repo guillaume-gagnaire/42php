@@ -192,12 +192,13 @@ class                           AdminType {
                 $value = Upload::job($key, false, ['jpg', 'jpeg', 'png', 'gif']);
             	if (!$value)
             		return null;
+            	$i = new Image(ROOT.$value);
+            	$i->exifRotation();
             	if ($params && preg_match('/^[0-9]+x[0-9]+$/', $params)) {
 	            	list($width, $height) = explode('x', $params);
-	            	$i = new Image(ROOT.$value);
 	            	$i->resize(intval($width), intval($height), false);
-	            	$i->save();
             	}
+            	$i->save();
                 return $value;
                 break;
         }
