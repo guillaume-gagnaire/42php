@@ -537,7 +537,7 @@ In the views, to track clicks for conversion stats, you can use `AB::link` and
         <!-- First parameter is the url, second is an optional string to identify different button, for example -->
         
         
-        <form method="post" action="/anUrl" onsubmit="<?= AB::click("secondAction") ?>">
+        <form method="post" action="/anUrl" onsubmit="<?= AB::ajax("secondAction") ?>">
             <!-- The AB::click method has only the optional string -->
             <button>Do the action</button>
         </form>
