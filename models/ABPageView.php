@@ -9,6 +9,7 @@ class 					ABPageView extends Model {
 	public 				$clicked = 0;
 	public 				$click_date;
 	public 				$param;
+	public 				$file;
 }
 
 ?>

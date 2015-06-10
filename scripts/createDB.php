@@ -79,6 +79,7 @@ $queries = [
 		                    `id` int(11) NOT NULL AUTO_INCREMENT,
 		                    `userid` int(11),
 		                    `date` datetime,
+		                    `file` text,
 		                    `path` text,
 		                    `pagehash` text,
 		                    `sessionid` text,

@@ -26,6 +26,7 @@ class 							AB {
 		$ab->pagehash = Conf::get('page.hash', '');
 		$ab->click_date = '0000-00-00 00:00:00';
 		$ab->param = '';
+		$ab->file = $page;
 		$ab->save();
 		
 		Conf::set('ab.pageview.id', $ab->id);
