@@ -74,7 +74,18 @@ $queries = [
                     `ip` text,
                     `lang` text,
                     PRIMARY KEY (`id`)
-                ) DEFAULT CHARSET=utf8'
+                ) DEFAULT CHARSET=utf8',
+    'ABPageView' => 	'CREATE TABLE IF NOT EXISTS `ABPageView` (
+		                    `id` int(11) NOT NULL AUTO_INCREMENT,
+		                    `userid` int(11),
+		                    `date` datetime,
+		                    `path` text,
+		                    `pagehash` text,
+		                    `sessionid` text,
+		                    `clicked` tinyint(1),
+		                    `click_date` datetime,
+		                    PRIMARY KEY (`id`)
+		                ) DEFAULT CHARSET=utf8'
 ];
 
 foreach ($queries as $k => $v) {
