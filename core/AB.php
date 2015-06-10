@@ -1,24 +1,5 @@
 <?php
-	
-/*
-** AB testing class
-** 
-** use : in a controller, use AB::render or AB::partial to render a view :
-** 
-** AB::render([
-	'files' => [
-		'file1',
-		'file2',
-		'filedir/file3'
-	],
-	'params' => [
-		// View params
-	]
-	
-]);
-** 
-** 
-*/
+
 class 							AB {
 	public static function 		render($files, $params = []) {
 		return self::view('render', $files, $params);
