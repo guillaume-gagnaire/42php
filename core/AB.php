@@ -16,6 +16,19 @@ class 							AB {
 			$page = $files[rand(0, sizeof($files) - 1)];
 			Session::set('ab.pages.'.$key, $page);
 		}
+		
+		$ab = new ABPageView();
+		$ab->date = date('Y-m-d H:i:s');
+		$ab->clicked = 0;
+		$ab->path = $_SERVER['REQUEST_URI'];
+		$ab->userid = Session::get('user.id', 0);
+		$ab->sessionid = Session::$id;
+		$ab->pagehash = Conf::get('page.hash', '');
+		$ab->click_date = '0000-00-00 00:00:00';
+		$ab->save();
+		
+		Conf::set('ab.pageview.id', $ab->id);
+		
 		return View::$func($page, $params);
 	}
 	
