@@ -506,3 +506,41 @@ $this->methods['dashboard'] = new AdminTable([
 
 ?>
 ```
+
+
+AB testing
+----------
+
+**42php** comes with an integrated AB testing tool, with unlimited number of 
+tested pages. All you have to do is to call `AB::render` or `AB::partial` the 
+same way you call the `View` class.
+
+You'll have all the stats in the admin panel.
+
+```php
+<?php
+
+return AB::render(['dir/file1', 'dir/file2', 'dir/file3'], [
+    // view parameters
+]);
+
+?>
+```
+
+In the views, to track clicks for conversion stats, you can use `AB::link` and 
+`AB::click` methods to track it :
+
+```php
+<div class="row">
+    <div class="small-12 column">
+        <a href="<?= AB::link("/register", "mainRegisterButton") ?>">Register !</span>
+        <!-- First parameter is the url, second is an optional string to identify different button, for example -->
+        
+        
+        <form method="post" action="/anUrl" onsubmit="<?= AB::click("secondAction") ?>">
+            <!-- The AB::click method has only the optional string -->
+            <button>Do the action</button>
+        </form>
+    </div>
+</div>
+```
