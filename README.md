@@ -508,7 +508,7 @@ $this->methods['dashboard'] = new AdminTable([
 ```
 
 
-AB testing
+A/B testing
 ----------
 
 **42php** comes with an integrated AB testing tool, with unlimited number of 

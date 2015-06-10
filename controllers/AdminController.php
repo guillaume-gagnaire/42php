@@ -65,16 +65,15 @@ class                   AdminController extends Controller {
 	}
 
     private function    addMethods() {
-        // Test for anonymous function
+        // Dashboard
         $this->methods['dashboard'] = new AdminTable([
-	        'mode' => 'standalone',
+            'mode' => 'standalone',
             'title' => _t('Tableau de bord'),
             'icon' => 'fi-home',
-	        'handler' => function() {
-		        return View::partial('admin/dashboard');
-	        }
+            'handler' => function() {
+                return View::partial('admin/dashboard');
+            }
         ]);
-
 
         // Users
         $this->methods['users'] = new AdminTable([
@@ -329,6 +328,55 @@ class                   AdminController extends Controller {
             ],
             'header' => 'path|file'
         ]);
+
+
+
+
+
+
+
+
+
+
+
+        // AB testing dashboard
+        $this->methods['ab'] = new AdminTable([
+            'mode' => 'standalone',
+            'title' => _t('Tests A/B'),
+            'icon' => 'fi-page-multiple',
+            'handler' => function() {
+                $pages = Db::query('SELECT path, pagehash, count(id) as nb FROM `ABPageView` GROUP BY `pagehash` ORDER BY `id`');
+                return View::partial('admin/ab/list', [
+                    'pages' => $pages
+                ]);
+            }
+        ]);
+        $this->methods['ab-view'] = new AdminTable([
+            'mode' => 'standalone',
+            'title' => _t('Tests A/B'),
+            'hidden' => true,
+            'icon' => 'fi-page-multiple',
+            'handler' => function() {
+
+
+
+
+
+
+            }
+        ]);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
