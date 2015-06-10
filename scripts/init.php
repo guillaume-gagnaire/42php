@@ -45,4 +45,11 @@ include ROOT.'/scripts/argv.php';
 
 Conf::set('url', 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 
+// Page hash
+global $argv;
+$pageHash = '/'.implode('/', $argv);
+if (sizeof($_GET))
+	$pageHash .= '?' . http_build_query($_GET);
+Conf::set('page.hash', sha1($pageHash));
+
 ?>
