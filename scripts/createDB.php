@@ -82,6 +82,7 @@ $queries = [
 		                    `path` text,
 		                    `pagehash` text,
 		                    `sessionid` text,
+		                    `param` text,
 		                    `clicked` tinyint(1),
 		                    `click_date` datetime,
 		                    PRIMARY KEY (`id`)
