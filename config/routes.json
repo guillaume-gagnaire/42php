@@ -1,4 +1,18 @@
 {
+    "admin": {
+        "controller": "AdminController@index",
+        "routes": {
+            "fr": "/admin",
+            "en": "/admin"
+        }
+    },
+    "ab": {
+        "controller": "ABController@handle",
+        "routes": {
+            "fr": "/__ab__",
+            "en": "/__ab__"
+        }
+    },
     "login": {
         "controller": "AuthController@login",
         "routes": {
@@ -25,13 +39,6 @@
         "routes": {
             "fr": "/mot-de-passe-oublie",
             "en": "/password-forgot"
-        }
-    },
-    "admin": {
-        "controller": "AdminController@index",
-        "routes": {
-            "fr": "/admin",
-            "en": "/admin"
         }
     },
     "blogArticle": {
