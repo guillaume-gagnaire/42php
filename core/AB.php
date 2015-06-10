@@ -40,7 +40,7 @@ class 							AB {
 	
 	public static function 		click($param = '') {
 		$link = Argv::createUrl('ab').'?clickOn='.Conf::get('ab.pageview.id', 0).'&p='.urlencode($param);
-		return "$.ajax({url: '$link'})";
+		return "$.ajax({url: '$link'});";
 	}
 }
 
