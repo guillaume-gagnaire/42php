@@ -32,12 +32,13 @@ class 							AB {
 		return View::$func($page, $params);
 	}
 	
-	public static function 		link($opts) {
-		
+	public static function 		link($link) {
+		return Argv::createUrl('ab').'?clickOn='.Conf::get('ab.pageview.id', 0).'&redirect='.urlencode($link);
 	}
 	
 	public static function 		click($opts) {
-		
+		$link = Argv::createUrl('ab').'?clickOn='.Conf::get('ab.pageview.id', 0);
+		return "$.ajax({url: '$link'})";
 	}
 }
 
