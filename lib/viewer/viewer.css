@@ -1,0 +1,148 @@
+.viewer {
+	display: none !important;
+}
+
+.viewer-background {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	z-index: 20000;
+	background: rgba(0, 0, 0, 0.8);
+}
+
+.viewer-window {
+	width: 80vw;
+	max-width: 1200px;
+	margin: 10vh auto;
+	height: 80vh;
+	position: relative;
+	background: #000;
+}
+
+.viewer-container {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 20001;
+}
+
+.viewer-column {
+	width: 300px;
+	background: #fff;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	right: 0;
+	overflow: auto;
+	z-index: 20010;
+	text-align: left;
+	padding: 15px;
+	display: none;
+}
+
+@media screen and (min-width: 700px) {
+	.viewer-column {
+		display: block;
+	}
+	
+	.viewer-window.with-column .viewer-container {
+		padding-right: 300px;
+	}
+}
+
+.viewer-viewer {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center center;
+	z-index: 20002;
+}
+
+.viewer-next {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 100%;
+	width: 50%;
+	z-index: 20003;
+}
+
+.viewer-prev {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 50%;
+	z-index: 20003;
+}
+
+.viewer-next i, .viewer-prev i {
+	color: #fff;
+	font-size: 42px;
+	position: absolute;
+	top: 50%;
+	margin: -21px 20px 0 20px;
+	opacity: 0;
+	-webkit-transition: all 100ms ease-in-out;
+	-moz-transition: all 100ms ease-in-out;
+	-ms-transition: all 100ms ease-in-out;
+	-o-transition: all 100ms ease-in-out;
+	transition: all 100ms ease-in-out;
+}
+
+.viewer-viewer:hover .viewer-next i, .viewer-viewer:hover .viewer-prev i {
+	opacity: 0.3;
+}
+
+.viewer-next:hover i, .viewer-prev:hover i {
+	opacity: 1 !important;
+}
+
+.viewer-next i {
+	right: 0;
+}
+
+.viewer-prev i {
+	left: 0;
+}
+
+.viewer-close {
+	z-index: 20050;
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 20px;
+	width: 20px;
+	text-align: center;
+	line-height: 20px;
+	cursor: pointer;
+}
+
+.viewer-close i {
+	color: #6C6C6C;
+	font-size: 15px;
+	margin: 0;
+	-webkit-transition: all 100ms ease-in-out;
+	-moz-transition: all 100ms ease-in-out;
+	-ms-transition: all 100ms ease-in-out;
+	-o-transition: all 100ms ease-in-out;
+	transition: all 100ms ease-in-out;
+}
+
+.viewer-close:hover i {
+	color: #fff;
+}
+
+.viewer-window.with-column .viewer-close i {
+	color: #6F6F6F;
+}
+
+.viewer-window.with-column .viewer-close:hover i {
+	color: #272727;
+}
