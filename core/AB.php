@@ -6,12 +6,13 @@ class 							AB {
 	}
 	
 	public static function 		partial($files, $params = []) {
-		return self::view('partial', $files, $params));
+		return self::view('partial', $files, $params);
 	}
 	
 	private static function 	view($func, $files, $params = []) {
 		$key = Conf::get('page.hash');
-		$page = Session::get('ab.pages.'.$key, false);
+		//$page = Session::get('ab.pages.'.$key, false);
+        $page = false;
 		if (!$page) {
 			$page = $files[rand(0, sizeof($files) - 1)];
 			Session::set('ab.pages.'.$key, $page);
@@ -38,7 +39,7 @@ class 							AB {
 		return Argv::createUrl('ab').'?clickOn='.Conf::get('ab.pageview.id', 0).'&redirect='.urlencode($link).'&p='.urlencode($param);
 	}
 	
-	public static function 		click($param = '') {
+	public static function 		ajax($param = '') {
 		$link = Argv::createUrl('ab').'?clickOn='.Conf::get('ab.pageview.id', 0).'&p='.urlencode($param);
 		return "$.ajax({url: '$link'});";
 	}
