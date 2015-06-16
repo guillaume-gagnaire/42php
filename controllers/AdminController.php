@@ -357,12 +357,40 @@ class                   AdminController extends Controller {
             'hidden' => true,
             'icon' => 'fi-page-multiple',
             'handler' => function() {
+                if (!isset($_GET['pagehash']))
+                    Redirect::http(Argv::createUrl('admin').'?module=ab');
+                $pagehash = $_GET['pagehash'];
 
+                $viewParams = [];
 
+                $totalviews = Db::get('SELECT COUNT(id) as nb, `url` FROM `ABPageView` WHERE `pagehash`='.Db::quote($pagehash));
+                $views = Db::get('SELECT COUNT(id) as nb, file FROM `ABPageView` WHERE `pagehash`='.Db::quote($pagehash).' GROUP BY `file` ORDER BY `nb` DESC');
 
+                $viewParams['url'] = $totalviews['url'];
+                $viewParams['totalviews'] = intval($totalviews['nb']);
 
+                $viewList = [];
+                foreach ($views as $view) {
+                    $data = [
+                        'file' => $view['file'],
+                        'totalviews' => intval($view['nb']),
+                        'clicks' => []
+                    ];
+                    $totalclicks = Db::get('SELECT COUNT(id) as nb FROM `ABPageView` WHERE `pagehash`='.Db::quote($pagehash).' AND `file`='.Db::quote($view['file']));
+                    $clicks = Db::get('SELECT COUNT(id) as nb, param FROM `ABPageView` WHERE `pagehash`='.Db::quote($pagehash).' AND `file`='.Db::quote($view['file']).' GROUP BY `param` ORDER BY `nb` DESC');
 
+                    $data['totalclicks'] = intval($totalclicks['nb']);
+                    foreach ($clicks as $click) {
+                        $data['clicks'][] = [
+                            'nb' => intval($click['nb']),
+                            'param' => $click['param']
+                        ];
+                    }
+                    $viewList[] = $data;
+                }
+                $viewParams['list'] = $viewList;
 
+                return View::partial('admin/ab/page', $viewParams);
             }
         ]);
 
