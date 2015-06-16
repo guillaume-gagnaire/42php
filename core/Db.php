@@ -26,11 +26,21 @@ class                               Db {
 
     public static function          get($query) {
         $req = Db::getInstance()->pdo()->query($query);
+        if (!$req) {
+            if (Conf::get('debug', false))
+                echo "SQL Error: $query";
+            return false;
+        }
         return $req->fetch(PDO::FETCH_ASSOC);
     }
 
     public static function          query($query) {
         $req = Db::getInstance()->pdo()->query($query);
+        if (!$req) {
+            if (Conf::get('debug', false))
+                echo "SQL Error: $query";
+            return false;
+        }
         return $req->fetchAll();
     }
 
