@@ -1,3 +1,8 @@
+<ul class="breadcrumbs admin-ariane">
+    <li><a href="<?= Argv::createUrl('admin') ?>">Panneau d'administration</a></li>
+    <li class="current"><a href="#" onclick="return false;"><?= _t("Tests A/B") ?></a></li>
+</ul>
+
 <h1><?= _t("Tests A/B") ?></h1>
 
 <table>

@@ -363,21 +363,23 @@ class                   AdminController extends Controller {
 
                 $viewParams = [];
 
-                $totalviews = Db::get('SELECT COUNT(id) as nb, `url` FROM `ABPageView` WHERE `pagehash`='.Db::quote($pagehash));
-                $views = Db::get('SELECT COUNT(id) as nb, file FROM `ABPageView` WHERE `pagehash`='.Db::quote($pagehash).' GROUP BY `file` ORDER BY `nb` DESC');
+                $totalviews = Db::get('SELECT COUNT(id) as nb, `path` FROM `ABPageView` WHERE `pagehash`='.Db::quote($pagehash));
+                $totalclicks = Db::get('SELECT COUNT(id) as nb, `path` FROM `ABPageView` WHERE `clicked`=1 AND `pagehash`='.Db::quote($pagehash));
+                $views = Db::query('SELECT COUNT(id) as nb, `file` FROM `ABPageView` WHERE `pagehash`='.Db::quote($pagehash).' GROUP BY `file` ORDER BY `nb` DESC');
 
-                $viewParams['url'] = $totalviews['url'];
+                $viewParams['url'] = $totalviews['path'];
                 $viewParams['totalviews'] = intval($totalviews['nb']);
+                $viewParams['totalclicks'] = intval($totalclicks['nb']);
 
                 $viewList = [];
                 foreach ($views as $view) {
                     $data = [
                         'file' => $view['file'],
-                        'totalviews' => intval($view['nb']),
+                        'views' => intval($view['nb']),
                         'clicks' => []
                     ];
-                    $totalclicks = Db::get('SELECT COUNT(id) as nb FROM `ABPageView` WHERE `pagehash`='.Db::quote($pagehash).' AND `file`='.Db::quote($view['file']));
-                    $clicks = Db::get('SELECT COUNT(id) as nb, param FROM `ABPageView` WHERE `pagehash`='.Db::quote($pagehash).' AND `file`='.Db::quote($view['file']).' GROUP BY `param` ORDER BY `nb` DESC');
+                    $totalclicks = Db::get('SELECT COUNT(id) as nb FROM `ABPageView` WHERE `clicked`=1 AND `pagehash`='.Db::quote($pagehash).' AND `file`='.Db::quote($view['file']));
+                    $clicks = Db::query('SELECT COUNT(id) as nb, param FROM `ABPageView` WHERE `clicked`=1 AND `pagehash`='.Db::quote($pagehash).' AND `file`='.Db::quote($view['file']).' GROUP BY `param` ORDER BY `nb` DESC');
 
                     $data['totalclicks'] = intval($totalclicks['nb']);
                     foreach ($clicks as $click) {
@@ -389,6 +391,7 @@ class                   AdminController extends Controller {
                     $viewList[] = $data;
                 }
                 $viewParams['list'] = $viewList;
+                $viewParams['viewlist'] = Db::query('SELECT * FROM `ABPageView` WHERE `pagehash`='.Db::quote($pagehash));
 
                 return View::partial('admin/ab/page', $viewParams);
             }
