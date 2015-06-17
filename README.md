@@ -554,7 +554,8 @@ Gallery Lightbox
  * `data-viewer-src` *(optional)*: URL of the full image. It's useful when you want to open viewer from a link, or other non-img tag, or from a thumbnail.
  * `data-height` *(optional)*: Height of the full image. It's useful when you want to open viewer from a link, or other non-img tag, or from a thumbnail.
  * `data-width` *(optional)*: Width of the full image. It's useful when you want to open viewer from a link, or other non-img tag, or from a thumbnail.
-
+ * `data-viewer-column` *(optional)*: Used to append a right column into the viewer. Useful if you want to put content like users, comments, etc ...
+ 
 Viewer works too with any AJAX loaded content.
 
 `test.html`
@@ -569,4 +570,13 @@ Viewer works too with any AJAX loaded content.
 <img src="/images/test2-tmb.jpg" alt="" data-viewer="gallery" data-viewer-src="/images/test2.jpg" />
 <img src="/images/test3-tmb.jpg" alt="" data-viewer="gallery" data-viewer-src="/images/test3.jpg" />
 <img src="/images/test4-tmb.jpg" alt="" data-viewer="gallery" data-viewer-src="/images/test4.jpg" />
+
+<!-- Story with one image and user details -->
+<img src="/images/test5.jpg" data-viewer="story" />
+<div data-viewer-column="story">
+    <h3>Guillaume Gagnaire</h3>
+    <p>
+        This picture has been taken in the south of France, in Bordeaux.
+    </p>
+</div>
 ```
