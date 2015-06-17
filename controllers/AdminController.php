@@ -51,6 +51,8 @@ class                   AdminController extends Controller {
 
         Conf::append('page.js', '/lib/swipe/swipe.js');
         Conf::append('page.js', '/lib/admin/menu.js');
+
+        Conf::set('page.title', _t("Administration"));
 	}
 	
 	private function 	getNav() {

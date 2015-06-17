@@ -1,6 +1,22 @@
 <?php
 
+
 include 'init.php';
+
+echo '<base target="_parent" />';
+
+extract($_GET);
+
+$confFile = "<?php
+
+Conf::set('pdo.dsn', 'mysql:host=$host;dbname=$dbname');
+Conf::set('pdo.user', '$user');
+Conf::set('pdo.pass', '$pass');
+Conf::set('pdo.prefix', '$prefix');
+
+?>";
+file_put_contents(ROOT.'/config/db.php', $confFile);
+include ROOT.'/config/db.php';
 
 
 $queries = [
@@ -90,10 +106,26 @@ $queries = [
 		                ) DEFAULT CHARSET=utf8'
 ];
 
+echo "Creating tables ... <br />";
 foreach ($queries as $k => $v) {
-	echo "Creating $k ... ";
+	echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$k<br />";
 	Db::exec($v);
-	echo "Done.\n";
 }
+
+echo "<br />Creating admin user ...";
+$previousUsers = User::find();
+foreach ($previousUsers as $prev)
+    $prev->delete();
+
+$u = new User();
+$u->admin = true;
+$u->email = $adminmail;
+$u->firstname = $firstname;
+$u->lastname = $lastname;
+$u->setPassword($adminpass);
+$u->save();
+echo " Done.";
+
+echo '<br /><br />You can now <a href="/admin" class="button">login</a> into the admin panel. Don\'t forget to delete /install.php and /scripts/createDB.php.';
 
 ?>
