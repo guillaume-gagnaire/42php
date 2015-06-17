@@ -544,3 +544,29 @@ In the views, to track clicks for conversion stats, you can use `AB::link` and
     </div>
 </div>
 ```
+
+
+Gallery Lightbox
+----------------
+**42php** comes with a simple lightbox, with Facebook-like design. You just have to set a bunch of parameters on any tag : 
+
+ * `data-viewer` *(mandatory)*: ID of the gallery. Doesn't match any DOM ID, it's only to set multiple images into the same viewer.
+ * `data-viewer-src` *(optional)*: URL of the full image. It's useful when you want to open viewer from a link, or other non-img tag, or from a thumbnail.
+ * `data-height` *(optional)*: Height of the full image. It's useful when you want to open viewer from a link, or other non-img tag, or from a thumbnail.
+ * `data-width` *(optional)*: Width of the full image. It's useful when you want to open viewer from a link, or other non-img tag, or from a thumbnail.
+
+Viewer works too with any AJAX loaded content.
+
+`test.html`
+```html
+<link rel="stylesheet" type="text/css" href="/lib/viewer/viewer.css" />
+<script type="text/javascript" src="/lib/viewer/viewer.js"></script>
+
+<!-- Single image -->
+<img src="/images/test1.jpg" alt="" data-viewer="soloimage" />
+
+<!-- Multiple images with thumbnails -->
+<img src="/images/test2-tmb.jpg" alt="" data-viewer="gallery" data-viewer-src="/images/test2.jpg" />
+<img src="/images/test3-tmb.jpg" alt="" data-viewer="gallery" data-viewer-src="/images/test3.jpg" />
+<img src="/images/test4-tmb.jpg" alt="" data-viewer="gallery" data-viewer-src="/images/test4.jpg" />
+```
