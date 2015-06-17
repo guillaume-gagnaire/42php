@@ -528,7 +528,7 @@ return AB::render(['dir/file1', 'dir/file2', 'dir/file3'], [
 ```
 
 In the views, to track clicks for conversion stats, you can use `AB::link` and 
-`AB::click` methods to track it :
+`AB::ajax` methods to track it :
 
 ```php
 <div class="row">
