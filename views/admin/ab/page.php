@@ -19,7 +19,6 @@
             ['Pages avec conversion', <?= $totalclicks ?>]
         ]);
         var options = {
-            title: '<?= _t("Conversation globale") ?>',
             pieHole: 0.4,
         };
         var chart = new google.visualization.PieChart(document.getElementById('conversionglobale'));
@@ -50,6 +49,50 @@
         var options = {};
         var chart = new google.visualization.LineChart(document.getElementById('totalviews'));
         chart.draw(data, options);
+        
+        
+        <?php
+	    
+	    foreach ($list as $view) {
+		    $viewhash = md5($view['file']);
+		    ?>
+		    
+		    var data = google.visualization.arrayToDataTable([
+	            ['<?= _t("Donnée") ?>', '<?= _t("Valeur") ?>'],
+	            ['Pages sans conversion', <?= $view['views'] - $view['totalclicks'] ?>],
+	            ['Pages avec conversion', <?= $view['totalclicks'] ?>]
+	        ]);
+	        var options = {
+	            pieHole: 0.4,
+	        };
+	        var chart = new google.visualization.PieChart(document.getElementById('<?= $viewhash ?>_conversion'));
+	        chart.draw(data, options);
+		    
+		    
+		    
+		    
+		    
+		    var data = google.visualization.arrayToDataTable([
+	            ['<?= _t("Donnée") ?>', '<?= _t("Valeur") ?>']
+	            <?php
+		        foreach ($view['clicks'] as $click) {
+			    	?>
+			    	,['<?= $click['param'] == '' ? '(not set)' : $click['param'] ?>', <?= $click['nb'] ?>]
+			    	<?php
+		        }
+		        ?>
+	        ]);
+	        var options = {
+	            pieHole: 0.4,
+	        };
+	        var chart = new google.visualization.PieChart(document.getElementById('<?= $viewhash ?>_clicks'));
+	        chart.draw(data, options);
+		    
+		    
+		    <?php
+	    }
+	        
+	    ?>
     }
 </script>
 
@@ -63,3 +106,23 @@
         <div id="totalviews" style="height: 300px;"></div>
     </div>
 </div>
+<?php
+foreach ($list as $view) {
+    $viewhash = md5($view['file']);
+	?>
+	<div class="row">
+		<div class="small-12 column">
+			<h2><?= _t("Vue").' : '.$view['file'] ?></h2>
+		</div>
+	</div>
+	<div class="row">
+	    <div class="small-12 medium-6 column">
+		    <div id="<?= $viewhash ?>_conversion" style="height: 300px;"></div>
+	    </div>
+	    <div class="small-12 medium-6 column">
+		    <div id="<?= $viewhash ?>_clicks" style="height: 300px;"></div>
+	    </div>
+	</div>
+	<?php
+}
+?>
