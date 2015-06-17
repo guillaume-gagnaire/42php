@@ -122,6 +122,7 @@ $u->admin = true;
 $u->email = $adminmail;
 $u->firstname = $firstname;
 $u->lastname = $lastname;
+$u->registered = date('Y-m-d H:i:s');
 $u->setPassword($adminpass);
 $u->save();
 echo " Done.";
