@@ -528,7 +528,7 @@ return AB::render(['dir/file1', 'dir/file2', 'dir/file3'], [
 ```
 
 In the views, to track clicks for conversion stats, you can use `AB::link` and 
-`AB::click` methods to track it :
+`AB::ajax` methods to track it :
 
 ```php
 <div class="row">
@@ -542,5 +542,41 @@ In the views, to track clicks for conversion stats, you can use `AB::link` and
             <button>Do the action</button>
         </form>
     </div>
+</div>
+```
+
+
+Gallery Lightbox
+----------------
+**42php** comes with a simple lightbox, with Facebook-like design. You just have to set a bunch of parameters on any tag : 
+
+ * `data-viewer` *(mandatory)*: ID of the gallery. Doesn't match any DOM ID, it's only to set multiple images into the same viewer.
+ * `data-viewer-src` *(optional)*: URL of the full image. It's useful when you want to open viewer from a link, or other non-img tag, or from a thumbnail.
+ * `data-height` *(optional)*: Height of the full image. It's useful when you want to open viewer from a link, or other non-img tag, or from a thumbnail.
+ * `data-width` *(optional)*: Width of the full image. It's useful when you want to open viewer from a link, or other non-img tag, or from a thumbnail.
+ * `data-viewer-column` *(optional)*: Used to append a right column into the viewer. Useful if you want to put content like users, comments, etc ...
+ 
+Viewer works too with any AJAX loaded content.
+
+`test.html`
+```html
+<link rel="stylesheet" type="text/css" href="/lib/viewer/viewer.css" />
+<script type="text/javascript" src="/lib/viewer/viewer.js"></script>
+
+<!-- Single image -->
+<img src="/images/test1.jpg" alt="" data-viewer="soloimage" />
+
+<!-- Multiple images with thumbnails -->
+<img src="/images/test2-tmb.jpg" alt="" data-viewer="gallery" data-viewer-src="/images/test2.jpg" />
+<img src="/images/test3-tmb.jpg" alt="" data-viewer="gallery" data-viewer-src="/images/test3.jpg" />
+<img src="/images/test4-tmb.jpg" alt="" data-viewer="gallery" data-viewer-src="/images/test4.jpg" />
+
+<!-- Story with one image and user details -->
+<img src="/images/test5.jpg" data-viewer="story" />
+<div data-viewer-column="story">
+    <h3>Guillaume Gagnaire</h3>
+    <p>
+        This picture has been taken in the south of France, in Bordeaux.
+    </p>
 </div>
 ```
