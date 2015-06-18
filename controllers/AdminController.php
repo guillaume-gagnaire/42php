@@ -67,6 +67,21 @@ class                   AdminController extends Controller {
 	}
 
     private function    addMethods() {
+        // WYSIWYG Image Upload
+        $this->methods['wysiwygImageUpload'] = new AdminTable([
+            'mode' => 'standalone',
+            'hidden' => true,
+            'title' => '',
+            'handler' => function() {
+                $value = Upload::job('file', false, ['jpg', 'jpeg', 'png', 'gif', 'pjpeg']);
+                $ret = [
+                    'filelink' => !$value ? false : $value
+                ];
+                echo stripslashes(json_encode($ret));
+                die();
+            }
+        ]);
+
         // Dashboard
         $this->methods['dashboard'] = new AdminTable([
             'mode' => 'standalone',
@@ -331,6 +346,37 @@ class                   AdminController extends Controller {
             'header' => 'path|file'
         ]);
 
+        // Dashboard
+        $this->methods['views'] = new AdminTable([
+            'mode' => 'standalone',
+            'title' => _t('Vues'),
+            'icon' => 'fi-layout',
+            'handler' => function() {
+                $viewFiles = [];
+                foreach (Dir::read(ROOT.'/views', true, '*.php') as $file) {
+                    $file = str_replace('\\', '/', $file);
+                    $file = str_replace([str_replace('\\', '/', ROOT).'/views/', '.php'], '', $file);
+                    if (!preg_match('#^(admin|system)/#', $file))
+                        $viewFiles[] = $file;
+                }
+
+                if (isset($_GET['file']) && in_array($_GET['file'], $viewFiles)) {
+                    if (isset($_POST['content'])) {
+                        file_put_contents(ROOT . '/views/' . $_GET['file'] . '.php', $_POST['content']);
+                        Redirect::http(Conf::get('admin.url'));
+                    }
+                    $content = file_get_contents(ROOT . '/views/' . $_GET['file'] . '.php');
+                    return View::partial('admin/views/editor', [
+                        'content' => $content
+                    ]);
+                }
+
+                return View::partial('admin/views/list', [
+                    'files' => $viewFiles
+                ]);
+            }
+        ]);
+
 
 
 
@@ -414,20 +460,6 @@ class                   AdminController extends Controller {
 
 
 
-        // WYSIWYG Image Upload
-        $this->methods['wysiwygImageUpload'] = new AdminTable([
-            'mode' => 'standalone',
-            'hidden' => true,
-            'title' => '',
-            'handler' => function() {
-                $value = Upload::job('file', false, ['jpg', 'jpeg', 'png', 'gif', 'pjpeg']);
-                $ret = [
-                    'filelink' => !$value ? false : $value
-                ];
-                echo stripslashes(json_encode($ret));
-                die();
-            }
-        ]);
     }
 
     private function    handleRequests() {

@@ -43,5 +43,8 @@
         <?php foreach (Conf::get('page.css', []) as $file) { ?>
             <link rel="stylesheet" type="text/css" href="<?=$file ?>" />
         <?php } ?>
+
+        <!-- jQuery -->
+        <script src="/lib/foundation/js/vendor/jquery.js"></script>
     </head>
     <body>
