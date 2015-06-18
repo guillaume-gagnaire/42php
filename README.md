@@ -545,6 +545,76 @@ In the views, to track clicks for conversion stats, you can use `AB::link` and
 </div>
 ```
 
+API
+---
+With **42php**, you can easily create RESTful JSON API's in the fastest way possible. There is two modes : a secure way (with auth headers), and an open way.
+
+To create an API, you just have to call, in the controller of your choice the `API` class.
+
+`routes.json`
+```json
+{
+    "api": {
+        "controller": "TestController@run",
+        "routes": {
+            "fr": "/api/*",
+            "en": "/api/*"
+        }
+    }
+}
+```
+
+`ApiController.php`
+```php
+<?php
+
+class               ApiController extends Controller {
+    public function run() {
+        $api = new API(true); // true for secure mode
+        
+        // Add some methods
+        $api->get('me', function(){
+            return [
+                'userid' => 42,
+                'email' => 'contact@scrola.net',
+                'friends' => [
+                    1,
+                    2,
+                    3
+                ]
+            ];
+        });
+        
+        $api->put('post/*/photos', function($postid, $optionalParameter = ''){
+            // The star in the route specify a mandatory parameter, but you can have an unlimited number of optional parameters. Just put them in the anonymous function declaration
+            return true;
+        });
+        
+        // At the end, just run the API
+        $api->run();
+    }
+}
+
+?>
+```
+
+To call the API, a basic API JS class is available in `/lib/api/api.sample.1-0-0.js`. Copy this file and modify the `domain` attribute, to set the root of your API. When loaded, you can use this class on all your website :
+
+api.*method*(`API Method`, `Parameters`, `Callback`);
+
+`test.js`
+```javascript
+function callTheApi() {
+    api.get('me', {
+        someParam: "Just a value"
+    }, function(ret){
+        console.log(ret.email);
+        for (var i = 0; i < ret.friends.length; i++) {
+            console.log('Friend ID: ' + ret.friends[i]);
+        }
+    });
+}
+```
 
 Gallery Lightbox
 ----------------
