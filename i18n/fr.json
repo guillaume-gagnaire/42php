@@ -1,5 +1,5 @@
 {
-    "Adresse email": "Adresse email",
+    "Adresse email": "Adresse e-mail",
     "Ex: nom.prenom@site.com": "Ex: nom.prenom@site.com",
     "Mot de passe": "Mot de passe",
     "Connexion": "Connexion",
@@ -81,5 +81,9 @@
     "Cette page vous permet d'éditer un fichier de vue. Cette fonctionnalité est à utiliser à vos risques et périls ! Toute modification peut entrainer des dysfonctionnements dans votre site.": "Cette page vous permet d'éditer un fichier de vue. Cette fonctionnalité est à utiliser à vos risques et périls ! Toute modification peut entrainer des dysfonctionnements dans votre site.",
     "Modifier": "Modifier",
     "Editer un fichier": "Editer un fichier",
-    "Enregistrer": "Enregistrer"
+    "Enregistrer": "Enregistrer",
+    "Langues": "Langues",
+    "Cette page vous permet d'éditer un fichier de langue. Cette fonctionnalité est à utiliser à vos risques et périls ! Toute modification peut entrainer des dysfonctionnements dans votre site.": "Cette page vous permet d'éditer un fichier de langue. Cette fonctionnalité est à utiliser à vos risques et périls ! Toute modification peut entrainer des dysfonctionnements dans votre site.",
+    "Fichier de langue": "Fichier de langue",
+    "Editer une langue": "Editer une langue"
 }

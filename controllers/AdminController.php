@@ -377,6 +377,39 @@ class                   AdminController extends Controller {
             }
         ]);
 
+        // Dashboard
+        $this->methods['i18n'] = new AdminTable([
+            'mode' => 'standalone',
+            'title' => _t('Langues'),
+            'icon' => 'fi-flag',
+            'handler' => function() {
+                $langFiles = [];
+                foreach (Dir::read(ROOT.'/i18n', true, '*.json') as $file) {
+                    $file = str_replace('\\', '/', $file);
+                    $file = str_replace([str_replace('\\', '/', ROOT).'/i18n/', '.json'], '', $file);
+                    $langFiles[] = $file;
+                }
+
+                if (isset($_GET['file']) && in_array($_GET['file'], $langFiles)) {
+                    if (isset($_POST['content'])) {
+                        $n = [];
+                        foreach ($_POST['content'] as $k => $v)
+                            $n[base64_decode($k)] = $v;
+                        file_put_contents(ROOT . '/i18n/' . $_GET['file'] . '.json', json_encode($n, JSON_FORCE_OBJECT | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+                        Redirect::http(Conf::get('admin.url'));
+                    }
+                    $content = json_decode(file_get_contents(ROOT . '/i18n/' . $_GET['file'] . '.json'), true);
+                    return View::partial('admin/i18n/editor', [
+                        'content' => $content
+                    ]);
+                }
+
+                return View::partial('admin/i18n/list', [
+                    'files' => $langFiles
+                ]);
+            }
+        ]);
+
 
 
 
