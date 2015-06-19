@@ -29,6 +29,18 @@
         "users": {
             "canRegister": true,
             "path-after-register": "/admin"
+        },
+        "social": {
+            "facebook": {
+                "enabled": true,
+                "app_id": "650755571722041",
+                "app_secret": "d1562ffea395d87fc24f282515553843"
+            },
+            "google": {
+                "enabled": true,
+                "client_id": "280502691548-1r77i96e1m1o9mce67nl8ib92a7o6qhg.apps.googleusercontent.com",
+                "client_secret": "gD01ryQj5nVee2X_MGs8MQKT"
+            }
         }
     }
 }
