@@ -46,6 +46,9 @@ class                       SocialAuth {
      * }
      */
     private function         facebook() {
+        if (!Conf::get('auth.social.facebook.enabled', false))
+            return false;
+
         FacebookSession::setDefaultApplication(
             Conf::get('auth.social.facebook.app_id', ''),
             Conf::get('auth.social.facebook.app_secret', '')
@@ -84,6 +87,9 @@ class                       SocialAuth {
     }
 
     private function        google() {
+        if (!Conf::get('auth.social.google.enabled', false))
+            return false;
+
         $client_id = Conf::get('auth.social.google.client_id', '');
         $client_secret = Conf::get('auth.social.google.client_secret', '');
         $redirect_uri = 'http://'.$_SERVER['HTTP_HOST'].Argv::createUrl('socialauth').'?service=google&receive';

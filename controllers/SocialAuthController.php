@@ -17,6 +17,12 @@ class                           SocialAuthController extends Controller {
         $auth = new SocialAuth($service);
 
         $user = $auth->auth();
+        if (!$user) {
+            $redirect = Session::get('SocialAuth.Redirect', '/');
+            Session::remove('SocialAuth');
+            Session::save();
+            Redirect::http($redirect);
+        }
 
         $existantUser = User::findOne([
             'provider' => $user['provider'],
