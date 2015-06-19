@@ -47,7 +47,7 @@ $queries = [
                     `lang` text,
                     `photo` text,
                     `email_verified` tinyint(1),
-                    `provider` text,
+                    `provider` varchar(20),
                     `provider_id` text,
                     PRIMARY KEY (`id`)
                 ) DEFAULT CHARSET=utf8',
