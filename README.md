@@ -16,5 +16,7 @@ Librairies and technologies
 * Foundation Icons (http://zurb.com/playground/foundation-icon-fonts-3)
 * Pickadate (http://amsul.ca/pickadate.js/)
 * Slick (http://kenwheeler.github.io/slick/)
+* Facebook PHP SDK (https://github.com/facebook/facebook-php-sdk-v4)
+* Google API PHP SDK (https://github.com/google/google-api-php-client)
 
 See the **wiki** for usage
