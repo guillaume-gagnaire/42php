@@ -8,6 +8,7 @@ class                           SocialAuthController extends Controller {
 
         if (isset($_GET['redirect'])) {
             Session::set('SocialAuth.Redirect', $_GET['redirect']);
+            Session::save();
         }
 
         if (!$service)
@@ -17,14 +18,31 @@ class                           SocialAuthController extends Controller {
 
         $user = $auth->auth();
 
-        var_dump($user);
+        $existantUser = User::findOne([
+            'provider' => $user['provider'],
+            'provider_id' => $user['provider_id']
+        ]);
 
-
+        if ($existantUser) {
+            Auth::setCurrentUser($existantUser->id, $existantUser);
+        } else {
+            $u = new User();
+            $u->email = $user['email'];
+            $u->genre = $user['genre'] == 'male' ? 'M.' : 'Mme.';
+            $u->firstname = $user['firstname'];
+            $u->lastname = $user['lastname'];
+            $u->photo = $user['photo'];
+            $u->email_verified = $user['email_verified'];
+            $u->provider = $user['provider'];
+            $u->provider_id = $user['provider_id'];
+            $u->save();
+            Auth::setCurrentUser($u->id, $u);
+        }
 
         $redirect = Session::get('SocialAuth.Redirect', '/');
         Session::remove('SocialAuth');
         Session::save();
-        //Redirect::http($redirect);
+        Redirect::http($redirect);
     }
 }
 
