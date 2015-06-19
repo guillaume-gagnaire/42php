@@ -35,6 +35,7 @@
 
         <!-- Foundation pre-loads -->
         <link rel="stylesheet" href="/lib/foundation/css/foundation.css" />
+        <link rel="stylesheet" href="/lib/foundation-icons/foundation-icons.css" />
         <script src="/lib/foundation/js/vendor/modernizr.js"></script>
 
         <!-- HTML5 shiv -->

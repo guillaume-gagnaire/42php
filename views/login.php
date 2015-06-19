@@ -32,6 +32,10 @@
             </div>
             <div class="row">
                 <div class="small-12 medium-9 medium-push-3 column text-left small-only-text-center">
+                    <div class="right">
+                        <a href="<?= Argv::createUrl('socialauth').'?service=facebook'.(isset($_GET['redirect']) ? '&redirect='.urlencode($_GET['redirect']) : '') ?>"><i class="fi-social-facebook" style="font-size: 36px;"></i></a>
+                        <a href="<?= Argv::createUrl('socialauth').'?service=google'.(isset($_GET['redirect']) ? '&redirect='.urlencode($_GET['redirect']) : '') ?>"><i class="fi-social-google-plus" style="font-size: 36px;"></i></a>
+                    </div>
                     <button><?= _t("Connexion") ?></button>
                 </div>
                 <div class="small-12 medium-3 medium-pull-9 column text-right small-only-text-center">

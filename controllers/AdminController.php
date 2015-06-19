@@ -45,7 +45,6 @@ class                   AdminController extends Controller {
 
 
         Conf::append('page.css', 'https://fonts.googleapis.com/css?family=Roboto:400,300');
-        Conf::append('page.css', '/lib/foundation-icons/foundation-icons.css');
         Conf::append('page.css', '/lib/admin/style.css');
 
 
