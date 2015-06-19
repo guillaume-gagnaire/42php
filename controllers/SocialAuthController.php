@@ -13,6 +13,9 @@ class                           SocialAuthController extends Controller {
         if (!$service)
             Redirect::http(Argv::createUrl('login').'?redirect='.urlencode($redirect));
 
+        $auth = new SocialAuth($service);
+
+        $user = $auth->auth();
     }
 }
 
