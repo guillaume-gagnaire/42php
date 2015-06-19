@@ -15,6 +15,7 @@ class                           User extends Model {
     public                      $slug;
     public                      $lang;
     public                      $photo;
+    public                      $email_verified = false;
 
     public function             beforeSave() {
         if ($this->slug == '') {

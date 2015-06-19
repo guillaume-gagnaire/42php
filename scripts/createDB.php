@@ -46,6 +46,7 @@ $queries = [
                     `slug` text,
                     `lang` text,
                     `photo` text,
+                    `email_verified` tinyint(1),
                     PRIMARY KEY (`id`)
                 ) DEFAULT CHARSET=utf8',
     'Page' => 	'CREATE TABLE IF NOT EXISTS `Page` (
