@@ -27,6 +27,13 @@
             "en": "/logout"
         }
     },
+    "socialauth": {
+        "controller": "SocialAuthController@handle",
+        "routes": {
+            "fr": "/socialauth",
+            "en": "/socialauth"
+        }
+    },
     "register": {
         "controller": "AuthController@register",
         "routes":  {

@@ -67,7 +67,7 @@ trait                           ConfData {
             unset($data[$key]);
             return $data;
         }
-        $data[$key] = self::recursiveRemove($keys, $value, isset($data[$key]) ? $data[$key] : []);
+        $data[$key] = self::recursiveRemove($keys, isset($data[$key]) ? $data[$key] : []);
 
         return $data;
     }
