@@ -1,18 +1,18 @@
 <?php
 
 class                       Mail {
-    private                 $senders = [
+    public static           $senders = [
         'system'
     ];
 
-    public function         send($to, $from, $subject, $message) {
-        foreach ($this->senders as $sender)
-            if ($this->$sender($to, $from, $subject, $message))
+    public static function  send($to, $from, $subject, $message) {
+        foreach (self::$senders as $sender)
+            if (self::$sender($to, $from, $subject, $message))
                 return true;
         return false;
     }
 
-    private function        system($to, $from, $subject, $message, $replyTo = false) {
+    public static function  system($to, $from, $subject, $message, $replyTo = false) {
         if ($replyTo === false)
             $replyTo = $from;
 
