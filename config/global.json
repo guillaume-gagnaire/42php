@@ -42,5 +42,8 @@
                 "client_secret": "gD01ryQj5nVee2X_MGs8MQKT"
             }
         }
+    },
+    "mail": {
+        "x-sender": "localhost"
     }
 }
