@@ -19,4 +19,4 @@ Librairies and technologies
 * Facebook PHP SDK (https://github.com/facebook/facebook-php-sdk-v4)
 * Google API PHP SDK (https://github.com/google/google-api-php-client)
 
-See the **wiki** for usage
+See the [wiki](https://gitlab.com/alduro-estallas/42php/wikis/home) for usage.
