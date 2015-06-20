@@ -30,7 +30,7 @@ class                       Mail {
         $mailContent .= "Content-Type: text/plain\n";
         $mailContent .= "charset=\"utf-8\"\n";
         $mailContent .= "Content-Transfer-Encoding: 8bit\n\n";
-        $mailContent .= Html2Text::convert($message);
+        $mailContent .= Html2Text::convert(utf8_decode($message));
 
         $mailContent .= "\n\n--".$boundary."\n";
         $mailContent .= "Content-Type: text/html; ";
