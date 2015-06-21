@@ -5,9 +5,9 @@ class                       Mail {
         'system'
     ];
 
-    public static function  send($to, $from, $subject, $message) {
+    public static function  send($to, $from, $subject, $message, $replyTo = false) {
         foreach (self::$senders as $sender)
-            if (self::$sender($to, $from, $subject, $message))
+            if (self::$sender($to, $from, $subject, $message, $replyTo))
                 return true;
         return false;
     }
