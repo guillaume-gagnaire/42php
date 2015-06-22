@@ -85,15 +85,6 @@ $queries = [
                         `slug` text,
                         PRIMARY KEY (`id`)
                     ) DEFAULT CHARSET=utf8',
-    'Stats' => 	'CREATE TABLE IF NOT EXISTS `Stats` (
-                    `id` int(11) NOT NULL AUTO_INCREMENT,
-                    `user_id` int,
-                    `date` datetime,
-                    `path` text,
-                    `ip` text,
-                    `lang` text,
-                    PRIMARY KEY (`id`)
-                ) DEFAULT CHARSET=utf8',
     'ABPageView' => 	'CREATE TABLE IF NOT EXISTS `ABPageView` (
 		                    `id` int(11) NOT NULL AUTO_INCREMENT,
 		                    `userid` int(11),

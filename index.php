@@ -19,8 +19,6 @@ if (!$route) {
     ];
 }
 
-Stats::log();
-
 echo Controller::run($route['controller'], $route['params']);
 
 ?>
