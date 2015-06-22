@@ -126,9 +126,11 @@ class                               Db {
     }
 
     public static function          log($query, $time, $error = false) {
+        $unit = 'ms';
+        $time *= 1000;
         Conf::append('inspector.queries', [
             'query' => $query,
-            'time' => number_format($time * 1000, 3, ',', ''),
+            'time' => number_format($time, 1, ',', '').$unit,
             'error' => $error
         ]);
     }

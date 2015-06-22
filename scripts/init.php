@@ -15,11 +15,6 @@ if (!isset($_SERVER['REQUEST_URI'])) {
     $_SERVER['REQUEST_URI'] = '/?'.implode('&', $p);
 }
 
-ini_set('display_errors',1);
-ini_set('display_startup_errors',1);
-error_reporting(-1);
-
-
 // Basics
 define('ROOT', realpath(dirname(__FILE__).'/../'));
 include ROOT.'/scripts/autoload.php';
@@ -29,6 +24,18 @@ $confToLoad = Dir::read(ROOT.'/config', true, '*.php');
 foreach ($confToLoad as $file)
 	include $file;
 Conf::load(ROOT.'/config/global.json');
+
+Conf::set('inspector.starttime', microtime(true));
+
+if (Conf::get('debug', false)) {
+    ini_set('display_errors',1);
+    ini_set('display_startup_errors',1);
+    error_reporting(-1);
+} else {
+    ini_set('display_errors', 0);
+    ini_set('display_startup_errors', 0);
+    error_reporting(0);
+}
 
 // Initialisation du multilangue
 i18n::init();

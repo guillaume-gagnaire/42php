@@ -20,5 +20,8 @@
         <?php foreach (Conf::get('page.bottom', []) as $script) { ?>
             <?=$script ?>
         <?php } ?>
+        <?php if (Conf::get('debug', false)) {
+            echo View::partial('system/debug');
+        } ?>
     </body>
 </html>
