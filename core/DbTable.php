@@ -20,11 +20,11 @@ class DbTable {
         $values = [];
         foreach ($data as $k => $v) {
             $keys[] = '`'.$k.'`';
-            $values[] = $this->pdo->quote($v);
+            $values[] = Db::quote($v);
         }
         $query = 'INSERT INTO `'.$this->tableName.'` ('.implode(', ', $keys).') VALUES ('.implode(', ', $values).')';
-        $this->pdo->exec($query);
-        return $this->pdo->lastInsertId();
+        Db::exec($query);
+        return Db::lastId();
     }
 
     public function update($clause = [], $data = []) {
@@ -36,7 +36,7 @@ class DbTable {
         $query = 'UPDATE `'.$this->tableName.'` SET '.implode(', ', $d);
         if (sizeof($clause))
             $query .= ' WHERE '.Db::where($clause);
-        return $this->pdo->exec($query);
+        return Db::exec($query);
     }
 
     public function save($data) {
@@ -64,8 +64,7 @@ class DbTable {
             $query .= ' ORDER BY '.Db::order($order);
         if ($limit)
             $query .= ' LIMIT '.$limit;
-        $req = $this->pdo->query($query);
-        return $req->fetchAll();
+        return Db::query($query);
     }
 
     public function findOne($clause = [], $values = [], $order = []) {
@@ -80,14 +79,13 @@ class DbTable {
         if (sizeof($order))
             $query .= ' ORDER BY '.Db::order($order);
         $query .= ' LIMIT 1';
-        $req = $this->pdo->query($query);
-        return $req->fetch(PDO::FETCH_ASSOC);
+        return Db::get($query);
     }
 
     public function remove($clause = []) {
         $query = 'DELETE FROM `'.$this->tableName.'`';
         if (sizeof($query))
             $query .= ' WHERE '.Db::where($clause);
-        return $this->pdo->exec($query);
+        return Db::exec($query);
     }
 }
