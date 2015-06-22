@@ -5,7 +5,7 @@
         <?php foreach (Conf::get('page.js', []) as $script) { ?>
             <script type="text/javascript" src="<?=$script ?>"></script>
         <?php } ?>
-        <?php $a = Conf::get('page.analytics', ''); if ($a != '') { ?>
+        <?php $mod = Conf::get('route.name', ''); $a = Conf::get('page.analytics', ''); if ($a != '' && $mod != 'admin') { ?>
             <script type="text/javascript">
                 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
                 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
