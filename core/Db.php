@@ -25,27 +25,34 @@ class                               Db {
     }
 
     public static function          get($query) {
+        if (Conf::get('debug', false))
+            $start = microtime(true);
         $req = Db::getInstance()->pdo()->query($query);
-        if (!$req) {
-            if (Conf::get('debug', false))
-                echo "SQL Error: $query";
+        if (Conf::get('debug', false))
+            self::log($query, microtime(true) - $start, !$req ? true : false);
+        if (!$req)
             return false;
-        }
         return $req->fetch(PDO::FETCH_ASSOC);
     }
 
     public static function          query($query) {
+        if (Conf::get('debug', false))
+            $start = microtime(true);
         $req = Db::getInstance()->pdo()->query($query);
-        if (!$req) {
-            if (Conf::get('debug', false))
-                echo "SQL Error: $query";
+        if (Conf::get('debug', false))
+            self::log($query, microtime(true) - $start, !$req ? true : false);
+        if (!$req)
             return false;
-        }
         return $req->fetchAll();
     }
 
     public static function          exec($query) {
-        return Db::getInstance()->pdo()->exec($query);
+        if (Conf::get('debug', false))
+            $start = microtime(true);
+        $ret = Db::getInstance()->pdo()->exec($query);
+        if (Conf::get('debug', false))
+            self::log($query, microtime(true) - $start);
+        return $ret;
     }
 
     public static function          where($query = [], $join = ' AND ', $parent = '') {
@@ -116,6 +123,14 @@ class                               Db {
             $str[] = '`'.$k.'` '.($v > 0 ? 'ASC' : 'DESC');
         }
         return implode(', ', $str);
+    }
+
+    public static function          log($query, $time, $error = false) {
+        Conf::append('inspector.queries', [
+            'query' => $query,
+            'time' => number_format($time, 3, ',', ''),
+            'error' => $error
+        ]);
     }
 }
 
