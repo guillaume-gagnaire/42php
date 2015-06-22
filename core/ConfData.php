@@ -72,6 +72,13 @@ trait                           ConfData {
         return $data;
     }
 
+    public static function      size($k) {
+        $el = self::get($k, []);
+        if (!is_array($el))
+            return 0;
+        return sizeof($el);
+    }
+
     public static function 		remove($k) {
         $k = explode('.', $k);
         self::$__data = self::recursiveRemove($k, self::$__data);
