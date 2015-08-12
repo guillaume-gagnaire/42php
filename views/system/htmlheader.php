@@ -2,6 +2,7 @@
 <html lang="<?= Conf::get('lang') ?>">
     <head>
         <meta charset="utf-8" />
+        <meta name="robots" content="<?= Conf::get('page.robots') ?>" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title><?= Conf::get('page.title') ?></title>
         <meta name="description" content="<?= str_replace('"', '&quot;', Conf::get('page.description')) ?>" />
