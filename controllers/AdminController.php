@@ -338,7 +338,7 @@ class                   AdminController extends Controller {
                     'title' => _t("Mots-clés")
                 ],
                 'image' => [
-                    'type' => 'text',
+                    'type' => ['image', '512x512'],
                     'title' => _t("Image de partage")
                 ],
             ],
