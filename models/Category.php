@@ -22,6 +22,12 @@ class                       Category extends Model {
             $this->slug = $base . $suffix;
         }
     }
+
+    public function             getUrl() {
+        return Argv::createUrl('blogCategory', [
+            'p1' => $this->slug
+        ]);
+    }
 }
 
 ?>
