@@ -63,7 +63,7 @@
                 </div>
                 <div class="small-12 medium-7 large-8 column" data-equalizer-watch>
                     <a href="<?= $post->getUrl() ?>" class="post_title"><?= $post->title ?></a>
-                    <div class="post_intro"><?= str_repeat($post->intro, 50) ?></div>
+                    <div class="post_intro"><?= $post->intro ?></div>
                     <div class="text-right small-only-text-center post_links">
                         <a href="<?= $post->getUrl() ?>" class="button small"><?=_t("Lire la suite") ?></a>
                     </div>
