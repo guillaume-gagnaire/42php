@@ -39,7 +39,7 @@ class                           Article extends Model {
 
     public static function      getPosts($page = 1, $limit = 10, $category = false) {
         $ret = [];
-        $posts = Db::query('SELECT * FROM `Article` WHERE `enabled`=1 AND `lang`='.Conf::get('lang').' '.($category !== false ? 'AND `category`='.Db::quote($category) : '').' ORDER BY `id` DESC LIMIT '.(($page - 1) * $limit).', '.$limit);
+        $posts = Db::query('SELECT * FROM `Article` WHERE `enabled`=1 AND `lang`='.Db::quote(Conf::get('lang')).' '.($category !== false ? 'AND `category`='.Db::quote($category) : '').' ORDER BY `id` DESC LIMIT '.(($page - 1) * $limit).', '.$limit);
         foreach ($posts as $post)
             $ret[] = new Article($post['id'], $post);
         return $ret;
