@@ -104,6 +104,23 @@ class                           AdminType {
         }
     }
 
+    public static function      process_textarea($key, $value, $params, $mode) {
+        switch ($mode) {
+            case 'display':
+                return $value;
+                break;
+            case 'preview':
+                return $value;
+                break;
+            case 'edit':
+                return '<textarea id="field_'.$key.'" name="'.$key.'" style="height: 350px;" class="text-left">'.$value.'</textarea>';
+                break;
+            case 'save':
+                return $value;
+                break;
+        }
+    }
+
     public static function      process_html($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
