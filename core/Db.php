@@ -16,6 +16,10 @@ class                               Db {
         return self::$__instance;
     }
 
+    public static function          close() {
+        self::$__instance = null;
+    }
+
     public static function          quote($str) {
         return Db::getInstance()->pdo()->quote($str);
     }
