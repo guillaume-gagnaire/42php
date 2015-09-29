@@ -17,6 +17,7 @@ Conf::set('pdo.prefix', '$prefix');
 ?>";
 file_put_contents(ROOT.'/config/db.php', $confFile);
 include ROOT.'/config/db.php';
+Db::close();
 
 
 $queries = [
