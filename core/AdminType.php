@@ -104,23 +104,6 @@ class                           AdminType {
         }
     }
 
-    public static function      process_textarea($key, $value, $params, $mode) {
-        switch ($mode) {
-            case 'display':
-                return $value;
-                break;
-            case 'preview':
-                return $value;
-                break;
-            case 'edit':
-                return '<textarea id="field_'.$key.'" name="'.$key.'" style="height: 350px;" class="text-left">'.$value.'</textarea>';
-                break;
-            case 'save':
-                return $value;
-                break;
-        }
-    }
-
     public static function      process_html($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
@@ -141,6 +124,23 @@ class                           AdminType {
                         });
                     });
                 </script>');
+                return '<textarea id="field_'.$key.'" name="'.$key.'" style="height: 350px;" class="text-left">'.$value.'</textarea>';
+                break;
+            case 'save':
+                return $value;
+                break;
+        }
+    }
+
+    public static function      process_textarea($key, $value, $params, $mode) {
+        switch ($mode) {
+            case 'display':
+                return $value;
+                break;
+            case 'preview':
+                return $value;
+                break;
+            case 'edit':
                 return '<textarea id="field_'.$key.'" name="'.$key.'" style="height: 350px;" class="text-left">'.$value.'</textarea>';
                 break;
             case 'save':
@@ -203,9 +203,11 @@ class                           AdminType {
                 return '<img src="'.$value.'" style="max-height: 32px; max-width: 32px;" alt="" />';
                 break;
             case 'edit':
-                return '<input id="field_'.$key.'" type="file" name="'.$key.'" style="margin-top: 9px" accept="image/*" />';
+                return '<input id="field_'.$key.'" type="file" name="'.$key.'" style="margin-top: 9px" accept="image/*" /> <label><input type="checkbox" name="_delete_'.$key.'" value="1" /> Supprimer</label>';
                 break;
             case 'save':
+                if (isset($_POST['_delete_'.$key]))
+                    return '';
                 $value = Upload::job($key, false, ['jpg', 'jpeg', 'png', 'gif']);
             	if (!$value)
             		return null;
@@ -230,9 +232,11 @@ class                           AdminType {
                 return '<a href="'.$value.'" target="_blank">'._t("Accéder au fichier").'</a>';
                 break;
             case 'edit':
-                return '<input id="field_'.$key.'" type="file" name="'.$key.'" style="margin-top: 9px" />';
+                return '<input id="field_'.$key.'" type="file" name="'.$key.'" style="margin-top: 9px" /> <label><input type="checkbox" name="_delete_'.$key.'" value="1" /> Supprimer</label>';
                 break;
             case 'save':
+                if (isset($_POST['_delete_'.$key]))
+                    return '';
             	$value = Upload::job($key);
             	if (!$value)
             		return null;
