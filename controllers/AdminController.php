@@ -366,7 +366,7 @@ class                   AdminController extends Controller {
                     }
                     $content = file_get_contents(ROOT . '/views/' . $_GET['file'] . '.php');
                     return View::partial('admin/views/editor', [
-                        'content' => $content
+                        'content' => htmlentities($content)
                     ]);
                 }
 
