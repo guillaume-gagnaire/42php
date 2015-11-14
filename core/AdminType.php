@@ -351,6 +351,48 @@ class                           AdminType {
                 break;
         }
     }
+
+    public static function      process_multiple($key, $value, $params, $mode) {
+        switch ($mode) {
+            case 'display':
+				$value = explode(',', $value);
+				$dis = [];
+				foreach ($value as $v) {
+		            if (ArrayTools::isAssoc($params))
+		                $dis[] = isset($params[$v]) ? $params[$v] : '';
+                }
+                return implode(', ', $dis);
+                break;
+            case 'preview':
+                $value = explode(',', $value);
+				$dis = [];
+				foreach ($value as $v) {
+		            if (ArrayTools::isAssoc($params))
+		                $dis[] = isset($params[$v]) ? $params[$v] : '';
+                }
+                return implode(', ', $dis);
+                break;
+            case 'edit':
+            	$str = '';
+            	$existant = explode(',', $value);
+            	foreach ($params as $k => $v) {
+	            	if (!ArrayTools::isAssoc($params))
+                        $k = $v;
+                    $str .= '<div class="row">
+                    	<div class="small-3 column"><input type="checkbox" name="'.$key.'[]" value="'.str_replace('"', '&quot;', $k).'" '.(in_array($k, $existant) ? 'checked="checked"' : '').' id="cb_'.$key.'_'.Text::slug($k).'" /></div>
+                    	<div class="small-9 column"><label for="cb_'.$key.'_'.Text::slug($k).'">'.$v.'</label></div>
+                    </div>';
+            	}
+                return $str;
+                break;
+            case 'save':
+            	$val = [];
+            	if (isset($_POST[$key]))
+            		$val = $_POST[$key];
+                return implode(',', $val);
+                break;
+        }
+    }
 }
 
 ?>
