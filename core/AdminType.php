@@ -341,7 +341,7 @@ class                           AdminType {
                 foreach ($params as $k => $v) {
                     if (!ArrayTools::isAssoc($params))
                         $k = $v;
-                    $str .= '<option value="'.str_replace('"', '&quot;', $k).'"'.($value == $v ? ' selected="selected"' : '').'>'.$v.'</option>';
+                    $str .= '<option value="'.str_replace('"', '&quot;', $k).'"'.($value == $k ? ' selected="selected"' : '').'>'.$v.'</option>';
                 }
                 $str .= '</select>';
                 return $str;
