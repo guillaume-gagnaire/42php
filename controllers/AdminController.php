@@ -80,6 +80,17 @@ class                   AdminController extends Controller {
                 die();
             }
         ]);
+        
+        // Dropzone image upload
+        $this->methods['dzUpload'] = new AdminTable([
+            'mode' => 'standalone',
+            'hidden' => true,
+            'title' => '',
+            'handler' => function() {
+                echo Upload::job('file', false, ['jpg', 'jpeg', 'png', 'gif', 'pjpeg']);
+                die();
+            }
+        ]);
 
         // Dashboard
         $this->methods['dashboard'] = new AdminTable([
