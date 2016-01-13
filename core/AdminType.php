@@ -17,6 +17,9 @@
  *      bool
  *      select
  *		hidden
+ *      photos
+ *      keyval
+ *      items
  */
 class                           AdminType {
     public static function      process_hidden($key, $value, $params, $mode) {
@@ -390,6 +393,174 @@ class                           AdminType {
             	if (isset($_POST[$key]))
             		$val = $_POST[$key];
                 return implode(',', $val);
+                break;
+        }
+    }
+    
+    public static function      process_items($key, $value, $params, $mode) {
+        switch ($mode) {
+            case 'display':
+				$value = explode(',', substr($value, 1, -1));
+                return implode(', ', $value);
+                break;
+            case 'preview':
+                $value = explode(',', substr($value, 1, -1));
+                return implode(', ', $value);
+                break;
+            case 'edit':
+            	$value = substr($value, 1, -1);
+                return '<input type="text" id="field_'.$key.'" name="'.$key.'" value="'.str_replace('"', '&quot;', $value).'" /><script type="text/javascript">
+                	$(function(){
+	                	$("#field_'.$key.'").tagsInput({
+		                	defaultText: "Saisissez",
+		                	delimiter: ",",
+		                	width: "100%"
+	                	});
+                	});
+                </script>';
+                break;
+            case 'save':
+                return ','.$_POST[$key].',';
+                break;
+        }
+    }
+
+    public static function      process_photos($key, $value, $params, $mode) {
+        switch ($mode) {
+            case 'display':
+            	$value = explode(';', $value);
+            	$str = '';
+            	foreach ($value as $photo) {
+	            	$str .= '<img src="'.$photo.'" alt="" style="max-width:50px;max-height:50px;" />';
+            	}
+                return $str;
+                break;
+            case 'preview':
+            	$value = explode(';', $value);
+            	$str = '';
+            	foreach ($value as $photo) {
+	            	$str .= '<img src="'.$photo.'" alt="" style="max-width:50px;max-height:50px;" />';
+            	}
+                return $str;
+                break;
+            case 'edit':
+            	$value = explode(';', $value);
+            	$existing = [];
+            	foreach ($value as $v) {
+	            	if (!strlen($v))
+	            		continue;
+	            	$name = explode('/', $v);
+	            	$name = $name[sizeof($name) - 1];
+	            	$ext = explode('.', $name);
+	            	$ext = $ext[sizeof($ext) - 1];
+	            	
+	            	$existing[] = [
+		            	'name' => $name,
+		            	'size' => filesize(ROOT.$v),
+		            	'type' => 'image/'.$ext,
+		            	'finalPath' => $v,
+		            	'accepted' => true,
+		            	'order' => sizeof($existing)
+	            	];
+            	}
+            
+            	return '<input type="hidden" name="'.$key.'" id="field_'.$key.'" value="'.implode(';', $value).'" />
+            	<div id="'.$key.'_dz" class="dropzone" data-result="field_'.$key.'"></div>
+            	<script type="text/javascript">
+            		var '.$key.'Dz = null;
+            		$(function(){
+	            		'.$key.'Dz = new Dropzone("div#'.$key.'_dz", {
+		            		url: "'.Argv::createUrl('admin').'?module=dzUpload&token=",
+		            		addRemoveLinks: true,
+		            		clickable: true,
+		            		paramName: "file",
+							maxFilesize: 8,
+							init: function() {
+								var existing = '.json_encode($existing).';
+								for (var i = 0; i < existing.length; i++) {
+							        this.emit("addedfile", existing[i]);
+							        this.createThumbnailFromUrl(existing[i], existing[i].finalPath);
+							        this.emit("success", existing[i]);
+							        this.emit("complete", existing[i]);
+							        this.files.push(existing[i]);
+						        }
+						        updateDzField('.$key.'Dz);
+							}
+	            		});
+	            		'.$key.'Dz.on("success", function(file, path){
+		            		file.finalPath = path;
+		            		updateDzField('.$key.'Dz);
+	            		});
+	            		'.$key.'Dz.on("removedfile", function(){
+		            		updateDzField('.$key.'Dz);
+	            		});
+	            		$("#'.$key.'_dz").sortable({
+					        items: ".dz-preview",
+					        cursor: "move",
+					        opacity: 0.5,
+					        containment: "#'.$key.'_dz",
+					        distance: 20,
+					        tolerance: "pointer",
+					        update: function(event, ui){
+						        sortDz('.$key.'Dz);
+					        }
+					    });
+            		});
+            	</script>';
+                break;
+            case 'save':
+                return $value;
+                break;
+        }
+    }
+
+    public static function      process_keyval($key, $value, $params, $mode) {
+        switch ($mode) {
+            case 'display':
+				$value = json_decode($value, true);
+				if (!$value)
+					$value = [];
+				$str = '';
+				foreach ($value as $v)
+					$str .= '<li><strong>'.$v['key'].'</strong>: '.$v['value'].'</li>';
+				
+                return "<ul>$str</ul>";
+                break;
+            case 'preview':
+                $value = json_decode($value, true);
+				if (!$value)
+					$value = [];
+				$str = '';
+				foreach ($value as $v)
+					$str .= '<li><strong>'.$v['key'].'</strong>: '.$v['value'].'</li>';
+				
+                return "<ul>$str</ul>";
+                break;
+            case 'edit':
+            	$str = '';
+            	$value = json_decode($value, true);
+				if (!$value)
+					$value = [];
+				foreach ($value as $k => $v) {
+					$str .= '<div class="row">
+						<div class="small-5 column">
+							<input type="text" name="'.$key.'['.$k.'][key]" value="'.str_replace('"', '&quot;', $v['key']).'" propname="key" placeholder="Nom" />
+						</div>
+						<div class="small-5 column">
+							<input type="text" name="'.$key.'['.$k.'][value]" value="'.str_replace('"', '&quot;', $v['value']).'" propname="value" placeholder="Valeur" />
+						</div>
+						<div class="small-2 column">
+							<a href="#" onclick="var el = this.parentNode.parentNode; if (el) {el.parentNode.removeChild(el);} reloadKeyvalIds(\''.$key.'\'); return false;"><i class="fi-x" style="font-size: 16px; color: red; margin-top: 10px; display: inline-block;"></i></a>
+						</div>
+					</div>';
+				}
+                return '<div id="keyval_'.$key.'_items" style="padding-top: 10px;">'.$str.'</div><div class="text-center" style="padding: 10px;"><a href="#" onclick="addLineToKeyval(\''.$key.'\'); return false;" class="button tiny">Ajouter</a></div>';
+                break;
+            case 'save':
+            	$val = [];
+            	if (isset($_POST[$key]))
+            		$val = $_POST[$key];
+                return json_encode($val);
                 break;
         }
     }
