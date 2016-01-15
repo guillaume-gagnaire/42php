@@ -16,7 +16,7 @@
  *      datetime
  *      bool
  *      select
- *		hidden
+ *      hidden
  *      photos
  *      keyval
  *      items
@@ -484,7 +484,7 @@ class                           AdminType {
 							        this.emit("complete", existing[i]);
 							        this.files.push(existing[i]);
 						        }
-						        updateDzField('.$key.'Dz);
+						        updateDzField(this);
 							}
 	            		});
 	            		'.$key.'Dz.on("success", function(file, path){
