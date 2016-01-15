@@ -3,7 +3,7 @@
 class                           Pagination {
     public static               $adjacent = 3;
 
-    public static function      generate($page, $maxPage, $getParam = 'page') {
+    public static function      generate($page, $maxPage, $getParam = 'page', $prev = '&laquo;', $next = '&raquo;') {
         $url = $_SERVER['REQUEST_URI'];
         $hay = strstr($url, '?', true);
         if ($hay)
@@ -18,7 +18,7 @@ class                           Pagination {
         }
 
         $str = '<ul class="pagination">
-            <li class="arrow '.($page == 1 ? 'unavailable' : '').'"><a href="'.($page == 1 ? '' : $url.($page - 1)).'" rel="prev">&laquo;</a></li>';
+            <li class="arrow '.($page == 1 ? 'unavailable' : '').'"><a href="'.($page == 1 ? '' : $url.($page - 1)).'" rel="prev">'.$prev.'</a></li>';
 
 
         if ($maxPage < 7 + (self::$adjacent * 2)) {
@@ -65,7 +65,7 @@ class                           Pagination {
             }
         }
 
-        $str .= '<li class="arrow '.($page == $maxPage ? 'unavailable' : '').'"><a href="'.($page == $maxPage ? '' : $url.($page + 1)).'" rel="next">&raquo;</a></li>
+        $str .= '<li class="arrow '.($page == $maxPage ? 'unavailable' : '').'"><a href="'.($page == $maxPage ? '' : $url.($page + 1)).'" rel="next">'.$next.'</a></li>
             </ul>';
         return $str;
     }
