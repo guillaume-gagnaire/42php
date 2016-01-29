@@ -42,7 +42,7 @@ class 				Upload {
 		$exists = true;
 		while ($exists) {
 			$exists = false;
-			$newFilename = str_replace('.'.$u->extension, '', $u->filename).'-'.Text::random(6, '0123456789aqwzsxedcrfvtgbyhnujikolpm').'.'.$u->extension;
+			$newFilename = Text::slug(str_replace('.'.$u->extension, '', $u->filename)).'-'.Text::random(6, '0123456789aqwzsxedcrfvtgbyhnujikolpm').'.'.$u->extension;
 			if (file_exists($path . $newFilename))
 				$exists = true;
 		}
