@@ -16,10 +16,12 @@
  *      datetime
  *      bool
  *      select
+ *      multiple
  *      hidden
  *      photos
  *      keyval
  *      items
+ *      gps
  */
 class                           AdminType {
     public static function      process_hidden($key, $value, $params, $mode) {
@@ -193,6 +195,78 @@ class                           AdminType {
         }
     }
 
+    public static function      process_gps($key, $value, $params, $mode) {
+        switch ($mode) {
+            case 'display':
+                return '<img src="http://maps.googleapis.com/maps/api/staticmap?center='.$value.'&zoom=16&size=100x100&key='.Conf::get('keys.googlemaps').'" />';
+                break;
+            case 'preview':
+                return '<img src="http://maps.googleapis.com/maps/api/staticmap?center='.$value.'&zoom=16&size=200x200&key='.Conf::get('keys.googlemaps').'" />';
+                break;
+            case 'edit':
+            	$val = explode(',', $value);
+            	if (sizeof($val) < 2)
+            		$val[1] = 0;
+				
+				$val[0] = floatval($val[0]);
+				$val[1] = floatval($val[1]);
+				
+				if ($val[0] == 0 && $val[1] == 0) {
+					$val[0] = 48.85940229103392;
+					$val[1] = 2.3381136274414303;
+				}
+				
+                return '<div id="map_'.$key.'" style="height: 300px; width: 100%;"></div>
+                	<div class="row">
+                		<div class="small-6 column">
+                			<input type="text" id="'.$key.'_lat" name="'.$key.'_lat" value="'.$val[0].'" placeholder="Latitude" onkeyup="update_'.$key.'_gps();" />
+                		</div>
+                		<div class="small-6 column">
+                			<input type="text" id="'.$key.'_lng" name="'.$key.'_lng" value="'.$val[1].'" placeholder="Longitude" onkeyup="update_'.$key.'_gps();" />
+                		</div>
+                	</div>
+                	<script type="text/javascript">
+                		var '.$key.'_map = null;
+                		var '.$key.'_marker = null;
+                		function create_'.$key.'_map() {
+	                		var myLatlng = new google.maps.LatLng('.$val[0].', '.$val[1].');
+							var mapOptions = {
+							  zoom: 12,
+							  center: myLatlng
+							}
+							'.$key.'_map = new google.maps.Map(document.getElementById("map_'.$key.'"), mapOptions);
+							'.$key.'_marker = new google.maps.Marker({
+							    position: myLatlng,
+							    map: '.$key.'_map,
+							    draggable: true
+							});
+							google.maps.event.addListener('.$key.'_marker, "dragend", function(event){
+								var lat = event.latLng.lat();
+								var lng = event.latLng.lng();
+								$("#'.$key.'_lat").val(lat);
+								$("#'.$key.'_lng").val(lng);
+							});
+	                	}
+                	
+						function update_'.$key.'_gps() {
+							var lat = parseFloat($("#'.$key.'_lat").val());
+							var lng = parseFloat($("#'.$key.'_lng").val());
+							'.$key.'_map.setCenter(new google.maps.LatLng(lat, lng));
+							'.$key.'_marker.setPosition(new google.maps.LatLng(lat, lng));
+						}
+						
+                		google.maps.event.addDomListener(window, "load", create_'.$key.'_map);
+                	</script>';
+                break;
+            case 'save':
+            	return implode(',', [
+	            	$_POST[$key.'_lat'],
+	            	$_POST[$key.'_lng']
+            	]);
+                break;
+        }
+    }
+
     public static function      process_image($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
@@ -358,41 +432,49 @@ class                           AdminType {
     public static function      process_multiple($key, $value, $params, $mode) {
         switch ($mode) {
             case 'display':
-				$value = explode(',', $value);
+				$value = explode(',', substr($value, 1, -1));
 				$dis = [];
 				foreach ($value as $v) {
 		            if (ArrayTools::isAssoc($params))
-		                $dis[] = isset($params[$v]) ? $params[$v] : '';
+		                $dis[] = isset($params[$v]) ? (is_array($params[$v]) ? $params[$v]['title'] : $params[$v]) : '';
                 }
                 return implode(', ', $dis);
                 break;
             case 'preview':
-                $value = explode(',', $value);
+                $value = explode(',', substr($value, 1, -1));
 				$dis = [];
 				foreach ($value as $v) {
 		            if (ArrayTools::isAssoc($params))
-		                $dis[] = isset($params[$v]) ? $params[$v] : '';
+		                $dis[] = isset($params[$v]) ? (is_array($params[$v]) ? $params[$v]['title'] : $params[$v]) : '';
                 }
                 return implode(', ', $dis);
                 break;
             case 'edit':
-            	$str = '';
-            	$existant = explode(',', $value);
+            	$str = '<div class="row" style="padding-bottom: 40px;">';
+            	$existant = explode(',', substr($value, 1, -1));
+            	$cpt = 0;
             	foreach ($params as $k => $v) {
 	            	if (!ArrayTools::isAssoc($params))
                         $k = $v;
-                    $str .= '<div class="row">
-                    	<div class="small-3 column"><input type="checkbox" name="'.$key.'[]" value="'.str_replace('"', '&quot;', $k).'" '.(in_array($k, $existant) ? 'checked="checked"' : '').' id="cb_'.$key.'_'.Text::slug($k).'" /></div>
-                    	<div class="small-9 column"><label for="cb_'.$key.'_'.Text::slug($k).'">'.$v.'</label></div>
+                    $attr = '';
+                    if (is_array($v) && isset($v['attr'])) {
+	                    foreach ($v['attr'] as $a => $b)
+	                    	$attr .= ' '.$a.'="'.str_replace('"', '&quot;', $b).'"';
+                    }
+                    $str .= '<div class="small-12 medium-6 large-4 column '.(++$cpt == sizeof($params) ? 'end' : '').'">
+                    	<div class="row"'.$attr.'>
+	                    	<div class="small-12 column" style="line-height: 40px;"><input type="checkbox" name="'.$key.'[]" value="'.str_replace('"', '&quot;', $k).'" '.(in_array($k, $existant) ? 'checked="checked"' : '').' id="cb_'.$key.'_'.Text::slug($k).'" /> <label for="cb_'.$key.'_'.Text::slug($k).'">'.(is_array($v) ? $v['title'] : $v).'</label></div>
+	                    </div>
                     </div>';
             	}
+            	$str .= '</div>';
                 return $str;
                 break;
             case 'save':
             	$val = [];
             	if (isset($_POST[$key]))
             		$val = $_POST[$key];
-                return implode(',', $val);
+                return ','.implode(',', $val).',';
                 break;
         }
     }
