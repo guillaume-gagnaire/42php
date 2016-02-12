@@ -47,6 +47,10 @@ class                   AdminTable {
         	$page = 1;
         	$order = '`'.$this->params['sortable'].'` ASC';
 		}
+        if (isset($this->params['filter']) && $this->params['filter']) {
+        	$limit = 99999;
+        	$page = 1;
+		}
 
         $table = $this->params['table'];
 		
