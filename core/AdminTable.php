@@ -71,7 +71,7 @@ class                   AdminTable {
 
         $items = Db::query('SELECT * FROM `'.$table.'` '.$where.' ORDER BY '.$order.' LIMIT '.(($page - 1) * $limit).', '.$limit);
         $cols = explode('|', $this->params['header']);
-        $src = '<table>
+        $src = '<table class="auto-list">
             <thead>
                 <th>ID</th>';
         foreach ($cols as $fieldname) {
