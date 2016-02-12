@@ -3,7 +3,7 @@
 <script type="text/javascript" src="/lib/dropzone/dropzone.js"></script>
 <link rel="stylesheet" type="text/css" href="/lib/tags/min.css" />
 <script type="text/javascript" src="/lib/tags/min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
 <script type="text/javascript">
 	Dropzone.autoDiscover = false;
 	function addLineToKeyval(key) {
