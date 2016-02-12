@@ -216,7 +216,8 @@ class                           AdminType {
 					$val[1] = 2.3381136274414303;
 				}
 				
-                return '<div id="map_'.$key.'" style="height: 300px; width: 100%;"></div>
+                return '<input type="text" id="'.$key.'_autocomplete" placeholder="Rechercher une adresse ..." />
+                    <div id="map_'.$key.'" style="height: 300px; width: 100%;"></div>
                 	<div class="row">
                 		<div class="small-6 column">
                 			<input type="text" id="'.$key.'_lat" name="'.$key.'_lat" value="'.$val[0].'" placeholder="Latitude" onkeyup="update_'.$key.'_gps();" />
@@ -228,6 +229,7 @@ class                           AdminType {
                 	<script type="text/javascript">
                 		var '.$key.'_map = null;
                 		var '.$key.'_marker = null;
+                		var '.$key.'_autocomplete = null;
                 		function create_'.$key.'_map() {
 	                		var myLatlng = new google.maps.LatLng('.$val[0].', '.$val[1].');
 							var mapOptions = {
@@ -235,6 +237,8 @@ class                           AdminType {
 							  center: myLatlng
 							}
 							'.$key.'_map = new google.maps.Map(document.getElementById("map_'.$key.'"), mapOptions);
+							'.$key.'_autocomplete = new google.maps.places.Autocomplete(document.getElementById("'.$key.'_autocomplete"));
+							'.$key.'_autocomplete.bindTo("bounds", '.$key.'_map);
 							'.$key.'_marker = new google.maps.Marker({
 							    position: myLatlng,
 							    map: '.$key.'_map,
@@ -245,6 +249,15 @@ class                           AdminType {
 								var lng = event.latLng.lng();
 								$("#'.$key.'_lat").val(lat);
 								$("#'.$key.'_lng").val(lng);
+							});
+							'.$key.'_autocomplete.addListener("place_changed", function(){
+								var place = '.$key.'_autocomplete.getPlace();
+								if (place.geometry) {
+									'.$key.'_map.setCenter(place.geometry.location);
+									'.$key.'_marker.setPosition(place.geometry.location);
+									$("#'.$key.'_lat").val(place.geometry.location.lat());
+									$("#'.$key.'_lng").val(place.geometry.location.lng());
+								}
 							});
 	                	}
                 	
