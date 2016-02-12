@@ -41,6 +41,12 @@ class                   AdminTable {
         $limit = 10;
         if (isset($this->params['limit']))
             $limit = intval($this->params['limit']);
+        $order = 'id DESC';
+        if (isset($this->params['sortable'])) {
+        	$limit = 99999;
+        	$page = 1;
+        	$order = '`'.$this->params['sortable'].'` ASC';
+		}
 
         $table = $this->params['table'];
 		
@@ -63,7 +69,7 @@ class                   AdminTable {
         if ($page > $maxPage)
             $page = $maxPage;
 
-        $items = Db::query('SELECT * FROM `'.$table.'` '.$where.' ORDER BY id DESC LIMIT '.(($page - 1) * $limit).', '.$limit);
+        $items = Db::query('SELECT * FROM `'.$table.'` '.$where.' ORDER BY '.$order.' LIMIT '.(($page - 1) * $limit).', '.$limit);
         $cols = explode('|', $this->params['header']);
         $src = '<table>
             <thead>
@@ -89,12 +95,23 @@ class                   AdminTable {
             $src .= '<tr><td colspan="'.(2 + sizeof($cols)).'" class="text-center">'._t("Aucun élément.").'</td></tr>';
         $src .= '</tbody></table>';
 
+        
+        $sortable = false;
+        $sortable_table = false;
+        if (isset($this->params['sortable'])) {
+	        $sortable = $this->params['sortable'];
+	        $sortable_table = $table;
+        }
 
         return View::partial('admin/list', [
             'pagination' => Pagination::generate($page, $maxPage),
             'items' => $src,
             'title' => $this->params['title'],
-            'item_label' => $this->params['item']
+            'item_label' => $this->params['item'],
+            'fields' => $this->params['fields'],
+            'filter' => isset($this->params['filter']) ? $this->params['filter'] : false,
+            'sortable' => $sortable,
+            'sortable_table' => $sortable_table
         ]);
     }
 
