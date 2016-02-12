@@ -79,7 +79,7 @@ class                   AdminTable {
         }
         $src .= '<th></th></thead><tbody>';
         foreach ($items as $item) {
-            $src .= '<tr><td>'.$item['id'].'</td>';
+            $src .= '<tr data-id="'.$item['id'].'"><td>'.$item['id'].'</td>';
             foreach ($cols as $colname) {
                 list($type, $params) = $this->getType($colname);
                 $type = "process_$type";
