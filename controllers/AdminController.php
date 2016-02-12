@@ -81,6 +81,21 @@ class                   AdminController extends Controller {
             }
         ]);
         
+        //updateTableOrder
+        $this->methods['updateTableOrder'] = new AdminTable([
+	        'mode' => 'standalone',
+            'hidden' => true,
+            'title' => '',
+            'handler' => function() {
+                $table = $_GET['tableName'];
+                $field = $_GET['field'];
+                $items = explode(',', $_GET['list']);
+				foreach ($items as $o => $id) {
+					Db::exec('UPDATE `'.$table.'` SET `'.$field.'`='.$o.' WHERE `id`='.$id);
+				}
+            }
+        ]);
+        
         // Dropzone image upload
         $this->methods['dzUpload'] = new AdminTable([
             'mode' => 'standalone',
